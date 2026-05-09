@@ -1,0 +1,32 @@
+---
+layout: base.njk
+title: Open Source Software
+description: Cubic Echo — open source projects.
+---
+<section class="hero">
+  <h1>{{ site.name }}</h1>
+  <p>{{ site.tagline }}.</p>
+</section>
+
+<h2 class="section-label">Projects</h2>
+
+<ul class="project-grid">
+  {% for project in collections.project %}
+    <li>
+      <a class="card-link" href="{{ project.url }}">
+        <article class="project-card">
+          <h3>{{ project.data.title }}</h3>
+          <p>{{ project.data.tagline }}</p>
+          <div class="card-foot">
+            {% if project.data.status %}
+              <span class="badge badge-{{ project.data.status }}">{{ project.data.status }}</span>
+            {% else %}
+              <span></span>
+            {% endif %}
+            <span>view →</span>
+          </div>
+        </article>
+      </a>
+    </li>
+  {% endfor %}
+</ul>

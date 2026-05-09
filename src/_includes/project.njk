@@ -1,0 +1,28 @@
+---
+layout: base.njk
+---
+<article class="project-page">
+  <p class="back"><a href="/">← Projects</a></p>
+
+  <section class="hero project-hero">
+    <h1>{{ title }}</h1>
+    {% if tagline %}<p>{{ tagline }}</p>{% endif %}
+    <p class="meta">
+      {% if status %}<span class="badge badge-{{ status }}">{{ status }}</span>{% endif %}
+      {% if repo %}<a href="{{ repo }}" rel="noopener">GitHub →</a>{% endif %}
+      {% if npm %}<a href="{{ npm }}" rel="noopener">npm →</a>{% endif %}
+      {% if demo %}<a href="{{ demo }}" rel="noopener">Demo →</a>{% endif %}
+    </p>
+  </section>
+
+  <div class="prose">
+    {{ content | safe }}
+  </div>
+
+  {% if repo %}
+    <p class="readme-link">
+      Full documentation lives in the project README:
+      <a href="{{ repo }}#readme" rel="noopener">{{ repo }}</a>
+    </p>
+  {% endif %}
+</article>
