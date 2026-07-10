@@ -1,8 +1,6 @@
 ---
 title: google-mcp-suite-docker
 tagline: Exposes the Google Workspace MCP servers over the network for homelab hosting.
-status: alpha
-version: v1.1.0
 category: ai
 order: 3
 repo: https://github.com/cubicecho/google-mcp-suite-docker

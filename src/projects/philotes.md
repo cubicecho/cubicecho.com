@@ -1,8 +1,6 @@
 ---
 title: philotes
 tagline: A personal CRM for the people who matter — not your pipeline.
-status: alpha
-version: v1.9.0
 order: 4
 repo: https://github.com/cubicecho/philotes
 ---

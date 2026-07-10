@@ -1,8 +1,6 @@
 ---
 title: graphql-casl
 tagline: CASL permission rules for GraphQL resolvers.
-status: alpha
-version: v0.2.1
 category: dev
 order: 1
 repo: https://github.com/vantreeseba/graphql-casl

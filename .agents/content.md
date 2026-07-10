@@ -21,22 +21,22 @@ These collections and the full `project` collection are defined in
 
 Current lineup:
 
-| slug                      | category | status      | repo                                          | order |
-| ------------------------- | -------- | ----------- | --------------------------------------------- | ----- |
-| preflight                 | app      | coming-soon | _private_                                     | 1     |
-| rpi-auto-gym              | app      | alpha       | github.com/vantreeseba/rpi-auto-gym           | 2     |
-| auto-cal                  | app      | alpha       | github.com/cubicecho/auto-cal                 | 3     |
-| philotes                  | app      | alpha       | github.com/cubicecho/philotes                 | 4     |
-| sendspin-image-server     | app      | alpha       | github.com/vantreeseba/sendspin-image-server  | 5     |
-| notes                     | app      | alpha       | github.com/cubicecho/notes                    | 6     |
-| ravocal                   | app      | alpha       | github.com/cubicecho/ravocal                  | 7     |
-| rp-tools                  | app      | alpha       | github.com/cubicecho/rp-tools                 | 8     |
-| mcp-router                | ai       | alpha       | github.com/cubicecho/mcp-router               | 1     |
-| mcp-skills-manager        | ai       | alpha       | github.com/cubicecho/mcp-skills-manager       | 2     |
-| google-mcp-suite-docker   | ai       | alpha       | github.com/cubicecho/google-mcp-suite-docker  | 3     |
-| graphql-casl              | dev      | alpha       | github.com/vantreeseba/graphql-casl           | 1     |
-| graphql-zod               | dev      | alpha       | github.com/vantreeseba/graphql-zod            | 2     |
-| graphql-mcp               | dev      | alpha       | github.com/cubicecho/graphql-mcp              | 3     |
+| slug                      | category | repo                                          | order |
+| ------------------------- | -------- | --------------------------------------------- | ----- |
+| preflight                 | app      | _private_                                     | 1     |
+| rpi-auto-gym              | app      | github.com/vantreeseba/rpi-auto-gym           | 2     |
+| auto-cal                  | app      | github.com/cubicecho/auto-cal                 | 3     |
+| philotes                  | app      | github.com/cubicecho/philotes                 | 4     |
+| sendspin-image-server     | app      | github.com/vantreeseba/sendspin-image-server  | 5     |
+| notes                     | app      | github.com/cubicecho/notes                    | 6     |
+| ravocal                   | app      | github.com/cubicecho/ravocal                  | 7     |
+| rp-tools                  | app      | github.com/cubicecho/rp-tools                 | 8     |
+| mcp-router                | ai       | github.com/cubicecho/mcp-router               | 1     |
+| mcp-skills-manager        | ai       | github.com/cubicecho/mcp-skills-manager       | 2     |
+| google-mcp-suite-docker   | ai       | github.com/cubicecho/google-mcp-suite-docker  | 3     |
+| graphql-casl              | dev      | github.com/vantreeseba/graphql-casl           | 1     |
+| graphql-zod               | dev      | github.com/vantreeseba/graphql-zod            | 2     |
+| graphql-mcp               | dev      | github.com/cubicecho/graphql-mcp              | 3     |
 
 Org projects live under the `cubicecho` GitHub org; a few older libraries and
 hardware repos are still under the personal `vantreeseba` account.
@@ -50,11 +50,6 @@ hardware repos are still under the personal `vantreeseba` account.
    ---
    title: <display name>            # required
    tagline: <one short sentence>    # required — shown on home card and project page
-   status: coming-soon | alpha | stable | archived  # optional, drives the badge
-   version: vX.Y.Z                  # optional — shown next to the status badge.
-                                    #   Hand-copied from the repo's latest GitHub
-                                    #   release (falling back to its package.json /
-                                    #   pyproject version). Refresh on new releases.
    category: ai | dev               # optional — routes to /ai/ or /dev/; omit for home
    order: <number>                  # optional, controls list order (per category)
    repo: https://github.com/...     # optional; omit for private projects
@@ -78,18 +73,6 @@ The `tagline:` field is currently a `TODO` placeholder for every project
 except as the user fills them in. Each `.md` body also has a `<!-- TODO -->`
 comment marking the intro to rewrite. When you're given a real description,
 replace both.
-
-## Status badges
-
-| value         | use when                                                 |
-| ------------- | -------------------------------------------------------- |
-| `coming-soon` | repo is private or pre-launch                            |
-| `alpha`       | published but unstable / breaking changes likely         |
-| `stable`      | published, API considered stable                         |
-| `archived`    | no longer maintained — keep on the list with this badge  |
-
-Adding a new status value also requires a `.badge-<value>` rule in
-`src/css/styles.css`.
 
 ## What does NOT belong on a project page
 

@@ -220,40 +220,6 @@ main {
   color: var(--accent);
 }
 
-.card-meta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.version {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-.badge {
-  display: inline-block;
-  font-size: 0.7rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  color: var(--muted);
-}
-.badge-coming-soon {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.badge-stable {
-  border-color: #16a34a;
-  color: #16a34a;
-}
-.badge-alpha {
-  border-color: #d97706;
-  color: #d97706;
-}
-
 /* project page */
 .project-page {
   padding: 1.5rem 0 1rem;

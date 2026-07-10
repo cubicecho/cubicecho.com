@@ -1,7 +1,6 @@
 ---
 title: preflight
 tagline: In private development — source coming when v1 ships.
-status: coming-soon
 order: 1
 repo: null
 ---

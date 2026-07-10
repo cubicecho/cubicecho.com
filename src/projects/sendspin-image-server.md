@@ -1,8 +1,6 @@
 ---
 title: sendspin-image-server
 tagline: Auto-pushes artwork to Sendspin-compatible e-Paper displays on your local network.
-status: alpha
-version: v1.22.0
 order: 5
 repo: https://github.com/vantreeseba/sendspin-image-server
 ---

@@ -1,8 +1,6 @@
 ---
 title: rp-tools
 tagline: A tabletop RPG spell and character manager for the browser.
-status: alpha
-version: v0.1.0
 order: 8
 repo: https://github.com/cubicecho/rp-tools
 ---

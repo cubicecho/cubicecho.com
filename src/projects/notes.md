@@ -1,8 +1,6 @@
 ---
 title: notes
 tagline: A local-first, web-first Markdown notes app.
-status: alpha
-version: v0.1.0
 order: 6
 repo: https://github.com/cubicecho/notes
 ---
