@@ -51,6 +51,10 @@ hardware repos are still under the personal `vantreeseba` account.
    title: <display name>            # required
    tagline: <one short sentence>    # required — shown on home card and project page
    status: coming-soon | alpha | stable | archived  # optional, drives the badge
+   version: vX.Y.Z                  # optional — shown next to the status badge.
+                                    #   Hand-copied from the repo's latest GitHub
+                                    #   release (falling back to its package.json /
+                                    #   pyproject version). Refresh on new releases.
    category: ai | dev               # optional — routes to /ai/ or /dev/; omit for home
    order: <number>                  # optional, controls list order (per category)
    repo: https://github.com/...     # optional; omit for private projects

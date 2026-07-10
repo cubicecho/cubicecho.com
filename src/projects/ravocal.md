@@ -2,6 +2,7 @@
 title: ravocal
 tagline: Group scheduling with ranked-choice voting.
 status: alpha
+version: v0.1.0
 order: 7
 repo: https://github.com/cubicecho/ravocal
 ---

@@ -2,6 +2,7 @@
 title: rpi-auto-gym
 tagline: A wall-mounted workout tracker on a Raspberry Pi.
 status: alpha
+version: v0.1.0
 order: 2
 repo: https://github.com/vantreeseba/rpi-auto-gym
 ---

@@ -2,6 +2,7 @@
 title: graphql-zod
 tagline: Build Zod validation schemas from GraphQL typed documents.
 status: alpha
+version: v0.1.0
 category: dev
 order: 2
 repo: https://github.com/vantreeseba/graphql-zod

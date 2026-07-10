@@ -2,6 +2,7 @@
 title: graphql-mcp
 tagline: Turn a GraphQL schema into a Model Context Protocol server.
 status: alpha
+version: v0.1.1
 category: dev
 order: 3
 repo: https://github.com/cubicecho/graphql-mcp

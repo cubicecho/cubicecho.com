@@ -220,6 +220,17 @@ main {
   color: var(--accent);
 }
 
+.card-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.version {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 .badge {
   display: inline-block;
   font-size: 0.7rem;
