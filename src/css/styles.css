@@ -155,17 +155,8 @@ main {
   display: flex;
 }
 
-.card-link {
-  color: var(--fg);
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
-.card-link:hover {
-  text-decoration: none;
-}
-
 .project-card {
+  position: relative;
   flex: 1;
   background: var(--card);
   border: 1px solid var(--line);
@@ -186,6 +177,20 @@ main {
   font-family: var(--font-mono);
   letter-spacing: -0.01em;
 }
+/* The title is the card's primary link, stretched to cover the whole card so
+   the entire card is clickable; the site link below sits above it. */
+.project-card h3 .card-link {
+  color: var(--fg);
+}
+.project-card h3 .card-link:hover {
+  text-decoration: none;
+}
+.card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+}
 .project-card p {
   margin: 0;
   color: var(--muted);
@@ -199,6 +204,20 @@ main {
   font-size: 0.85rem;
   color: var(--muted);
   margin-top: 0.5rem;
+}
+.card-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+/* lifted above the stretched card link so it stays independently clickable */
+.card-site {
+  position: relative;
+  z-index: 1;
+  color: var(--muted);
+}
+.card-site:hover {
+  color: var(--accent);
 }
 
 .badge {

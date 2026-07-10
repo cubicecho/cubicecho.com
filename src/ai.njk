@@ -1,0 +1,18 @@
+---
+layout: base.njk
+title: AI Projects
+description: Cubic Echo — MCP servers, gateways, and other AI tooling.
+permalink: /ai/
+---
+<section class="hero">
+  <h1>AI Projects</h1>
+  <p>MCP servers, gateways, and other tooling built for AI agents.</p>
+</section>
+
+<h2 class="section-label">AI Projects</h2>
+
+<ul class="project-grid">
+  {% for project in collections.projectAi %}
+    {% include "project-card.njk" %}
+  {% endfor %}
+</ul>

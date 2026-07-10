@@ -3,7 +3,7 @@ title: philotes
 tagline: A personal CRM for the people who matter — not your pipeline.
 status: alpha
 order: 4
-repo: https://github.com/vantreeseba/philotes
+repo: https://github.com/cubicecho/philotes
 ---
 
 philotes is a personal CRM for life, not work. Log interactions, jot notes

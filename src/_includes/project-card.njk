@@ -1,0 +1,17 @@
+<li>
+  <article class="project-card">
+    <h3><a class="card-link" href="{{ project.url }}">{{ project.data.title }}</a></h3>
+    <p>{{ project.data.tagline }}</p>
+    <div class="card-foot">
+      {% if project.data.status %}
+        <span class="badge badge-{{ project.data.status }}">{{ project.data.status }}</span>
+      {% else %}
+        <span></span>
+      {% endif %}
+      <span class="card-actions">
+        {% if project.data.homepage %}<a class="card-site" href="{{ project.data.homepage }}" rel="noopener">site ↗</a>{% endif %}
+        <span class="card-view">view →</span>
+      </span>
+    </div>
+  </article>
+</li>

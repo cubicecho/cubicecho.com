@@ -7,11 +7,24 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.setServerOptions({ port: 3000 });
 
-  eleventyConfig.addCollection("project", (api) =>
+  const byOrder = (a, b) => (a.data.order ?? 99) - (b.data.order ?? 99);
+  // Every project has a category; the default (unset) is a general "app".
+  const categoryOf = (p) => p.data.category || "app";
+  const inCategory = (cat) => (api) =>
     api
       .getFilteredByTag("project")
-      .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99)),
+      .filter((p) => categoryOf(p) === cat)
+      .sort(byOrder);
+
+  eleventyConfig.addCollection("project", (api) =>
+    api.getFilteredByTag("project").sort(byOrder),
   );
+
+  // The home "Projects" list, the "AI Projects" tab, and the "Dev Tools" tab
+  // are a partition of the same set, split on the `category` frontmatter field.
+  eleventyConfig.addCollection("projectMain", inCategory("app"));
+  eleventyConfig.addCollection("projectAi", inCategory("ai"));
+  eleventyConfig.addCollection("projectDev", inCategory("dev"));
 
   return {
     dir: {

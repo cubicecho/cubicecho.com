@@ -15,19 +15,25 @@ points outward.
 ## Page structure
 
 ```
-/              → home (hero + project grid)
+/              → home (hero + project grid; general apps)
+/ai/           → AI Projects tab (MCP / LLM / agent tooling)
+/dev/          → Dev Tools tab (libraries + developer tooling)
 /about/        → short blurb about the org
 /projects/<slug>/  → one page per project
 ```
 
-Each project page has a hand-authored intro, optional links (GitHub / npm /
-demo), and a pointer to the repo README for full docs.
+The project set is partitioned across the home, `/ai/`, and `/dev/` pages by
+the `category` frontmatter field (see [content.md](./content.md)). Each project
+page has a hand-authored intro, optional links (GitHub / npm / demo), and a
+pointer to the repo README for full docs.
 
 ## Tech
 
 - **[Eleventy 3.x](https://www.11ty.dev/)** with the default Nunjucks template
   engine.
-- Templates live in `src/_includes/` (`base.njk`, `project.njk`).
+- Templates live in `src/_includes/` (`base.njk` layout, `project.njk`
+  project-page layout, `project-card.njk` — the shared card partial included by
+  the `/`, `/ai/`, and `/dev/` list pages).
 - Project data lives in `src/projects/*.md` (one file per project), with
   shared frontmatter in `src/projects/projects.json`.
 - Site-wide config is in `src/_data/site.js`.

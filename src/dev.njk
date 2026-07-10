@@ -1,0 +1,18 @@
+---
+layout: base.njk
+title: Dev Tools
+description: Cubic Echo — libraries and developer tooling.
+permalink: /dev/
+---
+<section class="hero">
+  <h1>Dev Tools</h1>
+  <p>Libraries and tooling for building software.</p>
+</section>
+
+<h2 class="section-label">Dev Tools</h2>
+
+<ul class="project-grid">
+  {% for project in collections.projectDev %}
+    {% include "project-card.njk" %}
+  {% endfor %}
+</ul>

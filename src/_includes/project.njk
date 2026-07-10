@@ -2,13 +2,18 @@
 layout: base.njk
 ---
 <article class="project-page">
-  <p class="back"><a href="/">← Projects</a></p>
+  <p class="back">
+    {% if category == 'ai' %}<a href="/ai/">← AI Projects</a>
+    {% elif category == 'dev' %}<a href="/dev/">← Dev Tools</a>
+    {% else %}<a href="/">← Projects</a>{% endif %}
+  </p>
 
   <section class="hero project-hero">
     <h1>{{ title }}</h1>
     {% if tagline %}<p>{{ tagline }}</p>{% endif %}
     <p class="meta">
       {% if status %}<span class="badge badge-{{ status }}">{{ status }}</span>{% endif %}
+      {% if homepage %}<a href="{{ homepage }}" rel="noopener">Website →</a>{% endif %}
       {% if repo %}<a href="{{ repo }}" rel="noopener">GitHub →</a>{% endif %}
       {% if npm %}<a href="{{ npm }}" rel="noopener">npm →</a>{% endif %}
       {% if demo %}<a href="{{ demo }}" rel="noopener">Demo →</a>{% endif %}

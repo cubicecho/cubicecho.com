@@ -3,7 +3,8 @@ title: auto-cal
 tagline: A smart todo and habit scheduler that fits tasks into your time blocks by priority.
 status: alpha
 order: 3
-repo: https://github.com/vantreeseba/auto-cal
+repo: https://github.com/cubicecho/auto-cal
+homepage: https://cubicecho.github.io/auto-cal/
 ---
 
 auto-cal turns a list of tasks and habits into a real schedule. You define
