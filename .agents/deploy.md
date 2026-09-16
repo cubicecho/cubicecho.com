@@ -2,8 +2,8 @@
 
 ## Target
 
-GitHub Pages, served from the `cubicecho` GitHub org (repo TBD — most likely
-`cubicecho/cubicecho.com`).
+GitHub Pages, served from `cubicecho/cubicecho.com` at the custom domain
+**cubicecho.com** (the apex; `src/CNAME` carries it through to `_site/CNAME`).
 
 ## Workflow
 
@@ -23,12 +23,12 @@ Manual runs are allowed via `workflow_dispatch`.
 
 ## Custom domain (cubicecho.com)
 
-When the domain is wired up:
+Already wired up: `src/CNAME` holds the domain and `.eleventy.js` passes it
+through. If it ever has to be redone:
 
 1. Add `cubicecho.com` in GitHub repo settings → Pages → Custom domain.
-2. Drop a `CNAME` file at `src/CNAME` containing `cubicecho.com` so Eleventy
-   passes it through to `_site/CNAME`. (Add `CNAME` to the
-   `addPassthroughCopy` calls in `.eleventy.js` if needed.)
+2. Keep `src/CNAME` in the `addPassthroughCopy` calls in `.eleventy.js` — losing
+   it unsets the custom domain on the next deploy.
 3. Point the apex `A` records at the GitHub Pages IPs and a `www` `CNAME` at
    `<org>.github.io`, per
    [GitHub's docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site).
@@ -38,8 +38,9 @@ When the domain is wired up:
 If the site is ever served from `https://<org>.github.io/<repo>/` instead of
 a custom domain, add `pathPrefix: "/<repo>/"` to the Eleventy config return
 object **and** route every internal link through the `url` filter
-(`{{ "/about/" | url }}`). Currently we don't, because we expect a custom
-domain.
+(`{{ "/about/" | url }}`). We don't, because of the custom domain — but every
+*project* site does, since those are served from `/<repo>/`. See
+[cubesite](https://github.com/cubicecho/cubesite).
 
 ## Local preview of a production build
 

@@ -1,0 +1,25 @@
+---
+layout: base.njk
+pagination:
+  data: categories
+  size: 1
+  alias: category
+permalink: "/{{ category.slug }}/"
+eleventyComputed:
+  title: "{{ category.title }}"
+  description: "Cubic Echo — {{ category.blurb }}"
+---
+{# The four group pages — /ai/, /cloud/, /dev/, /apps/ — are one template
+   paginated over _data/categories.js, so a new group is a data change only. #}
+<section class="hero">
+  <h1>{{ category.title }}</h1>
+  <p>{{ category.blurb }}</p>
+</section>
+
+<ul class="project-grid">
+  {% for project in collections["project" + (category.slug | capitalize)] %}
+    {% include "project-card.njk" %}
+  {% endfor %}
+</ul>
+
+<p class="all-projects"><a href="/">← All projects</a></p>

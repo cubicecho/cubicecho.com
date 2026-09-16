@@ -2,15 +2,15 @@
 title: graphql-zod
 tagline: Build Zod validation schemas from GraphQL typed documents.
 category: dev
-order: 2
-repo: https://github.com/vantreeseba/graphql-zod
+order: 6
+repo: https://github.com/cubicecho/graphql-zod
 ---
 
 graphql-zod builds [Zod](https://zod.dev) validation schemas from your GraphQL
 operations. The runtime's `inferZodSchema` derives a Zod schema for an
 operation's variables from a `TypedDocumentNode`, and a graphql-codegen plugin
-emits `Variables` and `Result` schemas for every named operation — so you
-validate inputs and outputs against the same types your queries already use.
+emits `Variables` and `Result` schemas for every named operation — so inputs
+and outputs are validated against the same types the queries already use,
+rather than a second hand-written copy of them.
 
-Stack: TypeScript, Zod, graphql-codegen. An npm-workspaces monorepo published as
-`@vantreeseba/graphql-zod`.
+Stack: TypeScript, Zod, graphql-codegen. An npm-workspaces monorepo.

@@ -3,80 +3,104 @@
 ## The project list
 
 Every file in `src/projects/` with the `project` tag (set globally in
-`src/projects/projects.json`) is a project. The listing is **partitioned** on
-the `category` frontmatter field into three tabs:
+`src/projects/projects.json`) is a project. **The list is exactly the
+non-archived repos in the `cubicecho` GitHub org, and nothing else.** A repo
+that leaves the org, or a personal repo that never joined it, does not get a
+card here.
 
-- `/` (home) — `projectMain`: category `app` (the default when unset).
-- `/ai/` (`src/ai.njk`) — `projectAi`: category `ai`.
-- `/dev/` (`src/dev.njk`) — `projectDev`: category `dev`.
+Projects are partitioned into four groups on the `category` frontmatter field.
+The groups are declared once, in [`src/_data/categories.js`](../src/_data/categories.js),
+and everything else is generated from that list:
 
-These collections and the full `project` collection are defined in
-`.eleventy.js` and sorted by `order` (lower first). **Each category has its own
-`order` sequence** (they start over at 1 per tab). Categories:
+- `.eleventy.js` builds one collection per group — `projectAi`, `projectCloud`,
+  `projectDev`, `projectApps`.
+- `src/index.njk` renders one home section per group, in declaration order.
+- `src/group.njk` paginates over the list to produce `/ai/`, `/cloud/`,
+  `/dev/`, `/apps/`.
+- `src/_includes/base.njk` generates the header nav from it.
 
-- `ai` — MCP / LLM / agent tooling.
-- `dev` — libraries and developer tooling meant to be built _with_.
-- `app` (default) — end-user apps and hardware, including ML/CV projects like
-  `rpi-auto-gym` (treated as an app, not AI).
+So **adding or renaming a group is a change to `categories.js` alone.** Order
+within a group comes from the `order` frontmatter field, and each group has its
+own sequence starting at 1.
 
-Current lineup:
+| group | slug | what belongs in it |
+| --- | --- | --- |
+| AI & Agents | `ai` | MCP servers, agent runtimes, and the libraries under them. |
+| Personal Cloud | `cloud` | Self-hosted apps for one person's life, plus the dashboard that stitches them. |
+| Dev Tools | `dev` | Libraries meant to be built *with*, and the org's shared scaffolding. |
+| Apps | `apps` | Standalone apps that run in a browser and need nothing behind them. **The default** when `category` is unset. |
 
-| slug                      | category | repo                                          | order |
-| ------------------------- | -------- | --------------------------------------------- | ----- |
-| preflight                 | app      | _private_                                     | 1     |
-| rpi-auto-gym              | app      | github.com/vantreeseba/rpi-auto-gym           | 2     |
-| auto-cal                  | app      | github.com/cubicecho/auto-cal                 | 3     |
-| philotes                  | app      | github.com/cubicecho/philotes                 | 4     |
-| sendspin-image-server     | app      | github.com/vantreeseba/sendspin-image-server  | 5     |
-| notes                     | app      | github.com/cubicecho/notes                    | 6     |
-| ravocal                   | app      | github.com/cubicecho/ravocal                  | 7     |
-| rp-tools                  | app      | github.com/cubicecho/rp-tools                 | 8     |
-| mcp-router                | ai       | github.com/cubicecho/mcp-router               | 1     |
-| mcp-skills-manager        | ai       | github.com/cubicecho/mcp-skills-manager       | 2     |
-| google-mcp-suite-docker   | ai       | github.com/cubicecho/google-mcp-suite-docker  | 3     |
-| graphql-casl              | dev      | github.com/vantreeseba/graphql-casl           | 1     |
-| graphql-zod               | dev      | github.com/vantreeseba/graphql-zod            | 2     |
-| graphql-mcp               | dev      | github.com/cubicecho/graphql-mcp              | 3     |
+Current lineup — 32 projects, one per org repo:
 
-Org projects live under the `cubicecho` GitHub org; a few older libraries and
-hardware repos are still under the personal `vantreeseba` account.
+| group | projects (in order) |
+| --- | --- |
+| `ai` | mcp-router, mcp-skills-manager, mcp-zeromem, mcp-ragdown, mcp-actual, google-mcp-suite-docker, min-agent, task-server, kanban-server, agent-core, agent-mcp-pool |
+| `cloud` | personal-dashboard, auto-cal, ethos, telos, philotes, eunomia, notes, engrafo, auto-cal-ha-integration |
+| `dev` | cubeui, cubesite, graphql-mcp, drizzle-graphql, graphql-casl, graphql-zod, graphql-mocks, graphql-codegen-field-descriptions, cubicecho.com |
+| `apps` | fcb1010, rp-tools, ravocal |
+
+Two slugs deliberately differ from their repo name, because the file slug is
+the URL and the repo name is not a good one: `task-server` →
+`cubicecho/task_server`, and `auto-cal-ha-integration` →
+`cubicecho/auto_cal_ha_integration`. `cubicecho-com.md` is the third, to keep a
+dot out of the path. In each case `title:` shows the real name and `repo:`
+points at the real repo.
 
 ## Adding a project
+
+A new repo in the org gets a card here. That is the same checklist
+[cubesite](https://github.com/cubicecho/cubesite) enforces for project sites —
+repo, Pages site, card.
 
 1. Create `src/projects/<slug>.md`.
 2. Frontmatter fields:
 
    ```yaml
    ---
-   title: <display name>            # required
-   tagline: <one short sentence>    # required — shown on home card and project page
-   category: ai | dev               # optional — routes to /ai/ or /dev/; omit for home
-   order: <number>                  # optional, controls list order (per category)
-   repo: https://github.com/...     # optional; omit for private projects
-   homepage: https://...            # optional — the project's own site / GH Pages;
-                                    #   shown as "site ↗" on the card and "Website →"
-                                    #   on the project page. NOTE: do not name this
-                                    #   `site` — that key collides with the global
-                                    #   `src/_data/site.js` object.
-   npm: https://www.npmjs.com/...   # optional
+   title: <display name>            # required — the repo name, as published
+   tagline: <one short sentence>    # required — shown on the card and the page
+   category: ai | cloud | dev | apps  # optional; omit for `apps`
+   order: <number>                  # optional, per-group ordering
+   repo: https://github.com/...     # the org repo
+   homepage: https://...            # optional — its GitHub Pages site;
+                                    #   shown as "site ↗" on the card and
+                                    #   "Website →" on the project page. NOTE:
+                                    #   do not name this `site` — that key
+                                    #   collides with src/_data/site.js.
+   npm: https://www.npmjs.com/...   # optional — only if actually published
    demo: https://...                # optional
    ---
    ```
 
-3. Body: a short hand-authored intro (~3–6 sentences). End each project page
-   by trusting the `project.njk` layout to render the "Full documentation
-   lives in the README" pointer when `repo` is set.
+   A tagline containing `: ` must be quoted, or the YAML parser reads it as a
+   mapping and the build fails.
 
-## Editing existing projects
+3. Body: a short hand-authored intro, three to six sentences — what it is, the
+   one thing that makes it worth a click, and the stack. Cross-link sibling
+   projects with root-relative links (`/projects/agent-core/`); several of these
+   repos only make sense next to each other. End by trusting `project.njk` to
+   render the "Full documentation lives in the README" pointer when `repo` is
+   set.
 
-The `tagline:` field is currently a `TODO` placeholder for every project
-except as the user fills them in. Each `.md` body also has a `<!-- TODO -->`
-comment marking the intro to rewrite. When you're given a real description,
-replace both.
+## Keeping it in sync with the org
+
+The list drifts when a repo is added, renamed, or archived. To check:
+
+```sh
+gh repo list cubicecho --limit 100 --json name,description,isArchived
+ls src/projects/*.md
+```
+
+`cubesite`'s `npm run audit` covers the other half of the same question — which
+repos still have no Pages site, i.e. which cards can't have a `homepage:` yet.
 
 ## What does NOT belong on a project page
 
 - The full README. Link to it instead.
 - Long install instructions or API reference. Link to the README.
+- A project that is not an org repo — including private work. The old site
+  carried three (`preflight`, and two repos under the personal `vantreeseba`
+  account); they were removed, and a card for something a visitor cannot open
+  is worse than no card.
 - Screenshots over ~600KB. Optimize first; drop them in `src/assets/` and
   reference with `/assets/<file>`.

@@ -6,6 +6,13 @@ Plain CSS, single file: `src/css/styles.css`. No preprocessor, no framework,
 no PostCSS, no build step beyond Eleventy passthrough. If you find yourself
 reaching for one, push back first.
 
+The tokens and most of the component rules are shared with the org's other
+sites through [cubesite](https://github.com/cubicecho/cubesite), whose
+`theme/cubesite.css` was lifted from this file. They are not automatically
+linked — this site keeps its own copy, deliberately, because it is the one site
+served from a custom domain rather than `/<repo>/`. But **a token change here
+belongs there too**, or the org starts looking like two orgs again.
+
 ## Theme tokens
 
 All theming flows through CSS custom properties on `:root`, with a
@@ -42,6 +49,13 @@ and have it override the same tokens.
   reflows naturally without media queries.
 - Long-form content (project body, about) is capped at `42rem` for
   readability.
+- The home page stacks one `.group` section per category, each with a
+  `.group-title` linking to that group's page and a `.group-blurb` under it.
+  With 32 cards the page is long on purpose — the nav and the group pages are
+  there for anyone who wants a subset.
+- The header nav wraps (`flex-wrap`), because there are now six links plus the
+  wordmark. The current page is marked with `aria-current="page"` and styled
+  through that attribute rather than a class.
 
 ## Don'ts
 

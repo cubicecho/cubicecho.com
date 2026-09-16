@@ -98,11 +98,13 @@ main {
   display: flex;
   gap: 1.25rem;
   font-size: 0.95rem;
+  flex-wrap: wrap;
 }
 .site-header nav a {
   color: var(--muted);
 }
-.site-header nav a:hover {
+.site-header nav a:hover,
+.site-header nav a[aria-current="page"] {
   color: var(--fg);
   text-decoration: none;
 }
@@ -118,9 +120,48 @@ main {
   font-size: 0.85rem;
   color: var(--muted);
   margin-top: 4rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.site-footer a {
+  color: var(--muted);
+}
+.site-footer a:hover {
+  color: var(--fg);
+}
+.footer-links {
+  display: inline-flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-/* home */
+/* home — one section per group in _data/categories.js */
+.group {
+  padding: 2.5rem 0 0;
+}
+.group-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
+.group-title a {
+  color: var(--fg);
+}
+.group-title a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+.group-blurb {
+  margin: 0 0 1.25rem;
+  color: var(--muted);
+  max-width: 44rem;
+}
+
+.all-projects {
+  margin: 0 0 2rem;
+  font-size: 0.95rem;
+}
+
 .hero {
   padding: 3.5rem 0 2.5rem;
   border-bottom: 1px solid var(--line);

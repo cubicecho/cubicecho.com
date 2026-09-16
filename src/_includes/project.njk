@@ -1,10 +1,12 @@
 ---
 layout: base.njk
 ---
+{# The back link lands on the group page the visitor most likely came from. #}
+{% set group = category | group %}
+
 <article class="project-page">
   <p class="back">
-    {% if category == 'ai' %}<a href="/ai/">← AI Projects</a>
-    {% elif category == 'dev' %}<a href="/dev/">← Dev Tools</a>
+    {% if group %}<a href="/{{ group.slug }}/">← {{ group.title }}</a>
     {% else %}<a href="/">← Projects</a>{% endif %}
   </p>
 

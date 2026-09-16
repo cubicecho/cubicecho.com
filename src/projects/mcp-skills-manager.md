@@ -16,7 +16,7 @@ skills change on disk.
 
 Discovery meta-tools (`list_skills`, `search_skills`) let an agent find the
 right skill, and agent-side authoring tools plus a markdown web editor let you
-create, update, rename, and delete skills. Named workspaces expose curated
+create, update, rename, and delete them. Named workspaces expose curated
 subsets. Runs over both stdio and HTTP.
 
 Stack: TypeScript + Node/Express, React web UI, Docker.

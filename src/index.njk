@@ -1,17 +1,24 @@
 ---
 layout: base.njk
 title: Open Source Software
-description: Cubic Echo — open source projects.
+description: Cubic Echo — self-hosted apps, MCP and agent tooling, and developer libraries.
 ---
 <section class="hero">
   <h1>{{ site.name }}</h1>
-  <p>{{ site.tagline }}.</p>
+  <p>{{ site.tagline }}. Everything here is on <a href="{{ site.github }}" rel="noopener">GitHub</a>.</p>
 </section>
 
-<h2 class="section-label">Projects</h2>
+{# One section per group, in the order they are declared in _data/categories.js.
+   The group pages (/ai/, /cloud/, …) show the same cards on their own. #}
+{% for category in categories %}
+  <section class="group" id="{{ category.slug }}">
+    <h2 class="group-title"><a href="/{{ category.slug }}/">{{ category.title }}</a></h2>
+    <p class="group-blurb">{{ category.blurb }}</p>
 
-<ul class="project-grid">
-  {% for project in collections.projectMain %}
-    {% include "project-card.njk" %}
-  {% endfor %}
-</ul>
+    <ul class="project-grid">
+      {% for project in collections["project" + (category.slug | capitalize)] %}
+        {% include "project-card.njk" %}
+      {% endfor %}
+    </ul>
+  </section>
+{% endfor %}
