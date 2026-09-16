@@ -195,6 +195,12 @@ main {
 .project-grid > li {
   display: flex;
 }
+/* On a group page the grid follows the hero's rule directly, with no group
+   title between them as there is on the home page — so it has to bring that
+   space itself, and the same 2.5rem the `.group` sections use. */
+.hero + .project-grid {
+  margin-top: 2.5rem;
+}
 
 .project-card {
   position: relative;
