@@ -4,6 +4,7 @@ tagline: A multiplatform activity tracker — what you used, for how long, on yo
 category: cloud
 order: 6
 repo: https://github.com/cubicecho/eunomia
+homepage: https://cubicecho.github.io/eunomia/
 ---
 
 A desktop tray agent records which application is in use and sends it to a
