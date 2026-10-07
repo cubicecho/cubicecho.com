@@ -4,6 +4,7 @@ tagline: A minimal self-hostable document archive — the short path through Pap
 category: cloud
 order: 8
 repo: https://github.com/cubicecho/engrafo
+homepage: https://cubicecho.github.io/engrafo/
 ---
 
 Upload a file. It goes straight into an S3-compatible bucket, a small pipeline
