@@ -4,6 +4,7 @@ tagline: Scheduled AI tasks — a prompt, a cron trigger, your MCP tools, and th
 category: ai
 order: 8
 repo: https://github.com/cubicecho/task_server
+homepage: https://cubicecho.github.io/task_server/
 ---
 
 task-server is [min-agent](/projects/min-agent/) with the chat taken out. You
