@@ -4,6 +4,7 @@ tagline: Group scheduling with ranked-choice voting.
 category: apps
 order: 3
 repo: https://github.com/cubicecho/ravocal
+homepage: https://cubicecho.github.io/ravocal/
 ---
 
 ravocal helps a group land on a decision together: propose the options —
