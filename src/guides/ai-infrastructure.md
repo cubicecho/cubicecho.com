@@ -1,7 +1,7 @@
 ---
 title: Run your own AI infrastructure
 summary: One endpoint for your MCP servers, one for your model servers, one for your agents — as separate pieces or as one ai-router — and the apps that sit on top.
-order: 3
+order: 4
 projects: [ai-router, mcp-router, llm-router, min-agent, task-server, agent-core, agent-mcp-pool, mcp-discovery]
 ---
 

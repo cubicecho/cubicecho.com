@@ -107,7 +107,8 @@ repo, Pages site, card.
 `src/guides/*.md` are getting-started guides that walk through several
 projects together (layout `guide.njk`, URL `/guides/<slug>/`). Frontmatter:
 `title`, `summary` (shown on the guide card), `order`, and `projects` — a list
-of project slugs rendered as cards at the end. An unknown slug fails the build.
+of project slugs rendered as cards at the end (optional; the quickstart has
+none). An unknown slug fails the build.
 The home page shows the guides first, under "Start here".
 
 The section nav beside a guide is built from its headings at build time, so
@@ -152,7 +153,10 @@ categories and the `env` the deploy form asks for.
 - The stack managers fetch the compose file from `main` at deploy time, so a
   stack change reaches people on merge; the site deploy only matters for the
   feed itself.
-- The guides index explains how to add the feed URL.
+- The first guide, `src/guides/app-templates.md` ("Quickstart: app
+  templates"), walks through adding the feed and builds its stack table from
+  `templates.js` (each entry's `guide` links to the guide that explains it).
+  The guides index repeats the short version.
 
 ## Keeping it in sync with the org
 
