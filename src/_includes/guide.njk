@@ -36,12 +36,6 @@ layout: base.njk
 
   <div class="guide-layout">
     <aside class="guide-sidebar" aria-label="Guide navigation">
-      {% if doc.toc.length %}
-        <nav aria-labelledby="toc-title">
-          <p class="sidebar-title" id="toc-title">On this page</p>
-          {{ sectionNav(doc.toc) }}
-        </nav>
-      {% endif %}
       <nav aria-labelledby="guides-title">
         <p class="sidebar-title" id="guides-title">Guides</p>
         <ul class="toc">
@@ -50,6 +44,12 @@ layout: base.njk
           {% endfor %}
         </ul>
       </nav>
+      {% if doc.toc.length %}
+        <nav aria-labelledby="toc-title">
+          <p class="sidebar-title" id="toc-title">On this page</p>
+          {{ sectionNav(doc.toc) }}
+        </nav>
+      {% endif %}
     </aside>
 
     <div class="guide-main">

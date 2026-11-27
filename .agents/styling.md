@@ -72,8 +72,9 @@ and its rules (`.guide-layout`, `.guide-sidebar`, `.toc`, `.toc-mobile`,
   markdown-it plugin or other dependency.
 - **Wide screens** (`min-width: 56rem`): a two-column grid, a 13rem sticky
   sidebar and the prose at `minmax(0, 42rem)`, inside `--maxw`. The sidebar has
-  "On this page" (the toc, `###` indented) and "Guides" (every guide, the
-  current one `aria-current="page"`), so it doubles as the guide switcher. It
+  "Guides" first (every guide, the current one `aria-current="page"`), so it
+  doubles as the guide switcher, then "On this page" (the toc, `###`
+  indented). It
   scrolls on its own if it is taller than the viewport.
 - **Narrow screens**: the sidebar is hidden and the same toc renders in a
   folded `<details class="toc-mobile">` "On this page" block above the prose.
