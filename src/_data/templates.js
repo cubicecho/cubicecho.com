@@ -13,7 +13,9 @@
 // `env` is what the deploy form asks for. Keep it to what a person has to
 // decide (addresses, secrets, paths); everything else in the compose file has a
 // default. Every name must match a ${VAR} in that compose file — the build
-// fails if one does not.
+// fails if one does not. `optional: true` marks one that can stay empty; the
+// QNAP stack files (src/qnap-stacks.11ty.js) leave it empty instead of
+// writing a CHANGE_ME_ placeholder. It is not sent in the feed.
 const secret = (name, label) => ({
   name,
   label,
@@ -92,7 +94,7 @@ module.exports = [
       publicHost,
       postgresPassword,
       secret("AI_ROUTER_AUTH_SECRET", "ai-router session secret"),
-      { name: "OPENAI_API_KEY", label: "OpenAI API key (optional)" },
+      { name: "OPENAI_API_KEY", label: "OpenAI API key (optional)", optional: true },
     ],
   },
   {
@@ -112,7 +114,7 @@ module.exports = [
         label: "agent-router checkout",
         description: "Absolute path on the host to a checkout of agent-router.",
       },
-      { name: "OPENAI_API_KEY", label: "OpenAI API key (optional)" },
+      { name: "OPENAI_API_KEY", label: "OpenAI API key (optional)", optional: true },
     ],
   },
 ];

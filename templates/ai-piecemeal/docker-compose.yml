@@ -51,7 +51,7 @@ services:
       DATABASE_URL: ${AGENT_ROUTER_DATABASE_URL:-postgres://cubicecho:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/agent_router}
       # Agents name models as <provider>/<model>; "llm/ollama/qwen3:8b" goes to
       # llm-router, which passes "ollama/qwen3:8b" on to its own provider.
-      AGENT_ROUTER_PROVIDERS: ${AGENT_ROUTER_PROVIDERS:-[{"name":"llm","baseUrl":"http://llm-router:3000/v1","apiKey":"${LLM_ROUTER_TOKEN:-}"}]}
+      AGENT_ROUTER_PROVIDERS: '${AGENT_ROUTER_PROVIDERS:-[{"name":"llm","baseUrl":"http://llm-router:3000/v1","apiKey":"${LLM_ROUTER_TOKEN:-}"}]}'
       AGENT_ROUTER_ADMIN_TOKEN: ${AGENT_ROUTER_ADMIN_TOKEN:-}
       SECURE_LOCAL_NET: ${AGENT_ROUTER_SECURE_LOCAL_NET:-}
       NODE_ENV: production

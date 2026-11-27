@@ -1,7 +1,7 @@
 ---
 title: Give your agents tools
 summary: MCP servers for your skills, your notes, and your budget — run once, reachable from any MCP client.
-order: 3
+order: 4
 projects: [mcp-skills-manager, mcp-ragdown, mcp-actual]
 ---
 

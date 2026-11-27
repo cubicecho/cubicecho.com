@@ -158,6 +158,30 @@ categories and the `env` the deploy form asks for.
   `templates.js` (each entry's `guide` links to the guide that explains it).
   The guides index repeats the short version.
 
+## QNAP registry
+
+QNAP Container Station 3 can't read `/templates.json`: its custom templates
+hold one container each (no Compose, no git, no form variables), and its
+Applications read no `.env` file. So QNAP gets its own two halves, both built
+from data:
+
+- `/qnap/templates.json` (`src/qnap-templates.json.11ty.js`): QNAP's
+  single-container template format, from `apps` in `src/_data/qnap.js` — the
+  apps that run without a database server. Values you must set are
+  `CHANGE_ME_…`; the deploy wizard lets people edit env values and folder
+  mappings. Folders are under the `Container` share, one per app.
+- `/qnap/<slug>.yml` (`src/qnap-stacks.11ty.js`): each stack in
+  `templates.js` with every `${VAR}` resolved. Required settings, `${VAR:?}`
+  and bare `${VAR}` become `CHANGE_ME_<VAR>`; `optional: true` settings
+  become `""`; `stackDefaults` in `qnap.js` sets QNAP paths; everything else
+  takes its default. Check the output with
+  `env -i PATH=$PATH docker compose -f _site/qnap/<slug>.yml config -q`.
+- The guide is `src/guides/qnap.md` ("Quickstart: QNAP Container Station"),
+  second in the guide order; its tables are built from the same data.
+
+A compose value that resolves to JSON or anything else YAML would parse must
+be quoted in the source file, or the QNAP version stops being a string.
+
 ## Keeping it in sync with the org
 
 The list drifts when a repo is added, renamed, or archived. To check:
