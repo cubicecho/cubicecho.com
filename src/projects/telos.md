@@ -2,7 +2,7 @@
 title: telos
 tagline: A self-hostable todo board, and agents to work it if you want them.
 category: cloud
-order: 4
+order: 2
 repo: https://github.com/cubicecho/telos
 homepage: https://cubicecho.github.io/telos/
 ---

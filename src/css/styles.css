@@ -344,3 +344,87 @@ main {
 .about p:first-child {
   margin-top: 0;
 }
+
+/* status badge — e.g. `status: deprecated` on a project */
+.badge {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--muted);
+  vertical-align: middle;
+}
+
+/* guides */
+.guide-card {
+  border-color: var(--accent);
+}
+.guide-card h3 {
+  font-family: var(--font-sans);
+}
+.guide-page {
+  padding: 1.5rem 0 1rem;
+}
+.guide-page .back {
+  margin: 0 0 0.25rem;
+  font-size: 0.9rem;
+}
+.guide-page .prose {
+  padding-top: 2rem;
+}
+.prose h3 {
+  margin-top: 1.5rem;
+  font-size: 1.05rem;
+}
+.prose li + li {
+  margin-top: 0.35rem;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.45rem 0.75rem 0.45rem 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.prose th {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* compose files in the guides — folded by default */
+.prose details.compose {
+  margin: 1rem 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+.prose details.compose summary {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.prose details.compose summary:hover,
+.prose details.compose[open] summary {
+  color: var(--fg);
+}
+.prose details.compose[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+.prose details.compose pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0 0 var(--radius) var(--radius);
+}

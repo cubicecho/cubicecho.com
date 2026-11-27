@@ -1,0 +1,26 @@
+---
+layout: base.njk
+---
+{# A getting-started guide. `projects` in the frontmatter lists the project
+   slugs it walks through; they render as cards at the end, in that order. #}
+<article class="guide-page">
+  <p class="back"><a href="/guides/">← Guides</a></p>
+
+  <section class="hero">
+    <h1>{{ title }}</h1>
+    {% if summary %}<p>{{ summary }}</p>{% endif %}
+  </section>
+
+  <div class="prose">
+    {{ content | safe }}
+  </div>
+
+  {% if projects %}
+    <h2 class="section-label">Projects in this guide</h2>
+    <ul class="project-grid">
+      {% for project in collections.project | bySlugs(projects) %}
+        {% include "project-card.njk" %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</article>

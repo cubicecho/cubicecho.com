@@ -11,7 +11,7 @@ layout: base.njk
   </p>
 
   <section class="hero project-hero">
-    <h1>{{ title }}</h1>
+    <h1>{{ title }}{% if status %} <span class="badge">{{ status }}</span>{% endif %}</h1>
     {% if tagline %}<p>{{ tagline }}</p>{% endif %}
     <p class="meta">
       {% if homepage %}<a href="{{ homepage }}" rel="noopener">Website →</a>{% endif %}

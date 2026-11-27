@@ -10,16 +10,17 @@ permalink: /about/
 
 <section class="about">
 
-Cubic Echo is a small open source software outfit. The work falls into four
-rough piles: **agent and MCP tooling**, a **personal cloud** of self-hosted apps
-for one person's life, **developer libraries** — mostly around GraphQL — and a
-few **standalone apps** that run in a browser tab.
+Cubic Echo is a small open source software outfit. The work falls into a few
+rough piles: **MCP servers** and the **AI infrastructure** that routes models,
+tools and agents, a **personal cloud** of self-hosted apps for one person's
+life, **developer libraries** — mostly around GraphQL — and a few **standalone
+apps** that run in a browser tab. The [guides](/guides/) are the quickest way in.
 
 They lean on each other more than they look like they do. The agent servers
 share an [agent loop](/projects/agent-core/) and a
 [tool pool](/projects/agent-mcp-pool/); the personal-cloud apps each serve their
-own GraphQL API and are stitched into one page by the
-[dashboard](/projects/personal-dashboard/); the apps share
+own GraphQL API, and [symphony](/projects/symphony/) puts one UI over all of
+them; the apps share
 [components](/projects/cubeui/) and a [site kit](/projects/cubesite/). When the
 same thing gets written three times, it becomes its own repo — that is most of
 the Dev Tools list.

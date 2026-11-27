@@ -2,7 +2,7 @@
 title: auto-cal
 tagline: A smart todo and habit scheduler that fits tasks into your time blocks by priority.
 category: cloud
-order: 2
+order: 8
 repo: https://github.com/cubicecho/auto-cal
 homepage: https://cubicecho.github.io/auto-cal/
 ---

@@ -2,7 +2,7 @@
 title: eunomia
 tagline: A multiplatform activity tracker — what you used, for how long, on your own server.
 category: cloud
-order: 6
+order: 4
 repo: https://github.com/cubicecho/eunomia
 homepage: https://cubicecho.github.io/eunomia/
 ---

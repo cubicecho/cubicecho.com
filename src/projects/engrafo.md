@@ -2,7 +2,7 @@
 title: engrafo
 tagline: A minimal self-hostable document archive — the short path through Paperless-ngx.
 category: cloud
-order: 8
+order: 5
 repo: https://github.com/cubicecho/engrafo
 homepage: https://cubicecho.github.io/engrafo/
 ---

@@ -1,8 +1,8 @@
 ---
 title: mcp-skills-manager
 tagline: An MCP server that serves reusable "skills" — markdown playbooks — to agents.
-category: ai
-order: 2
+category: mcp
+order: 1
 repo: https://github.com/cubicecho/mcp-skills-manager
 homepage: https://cubicecho.github.io/mcp-skills-manager/
 ---

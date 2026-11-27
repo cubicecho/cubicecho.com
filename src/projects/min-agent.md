@@ -1,9 +1,10 @@
 ---
 title: min-agent
 tagline: "A very small self-hosted agent: chat over any OpenAI-compatible server, with MCP tools."
-category: ai
-order: 7
+category: agents
+order: 1
 repo: https://github.com/cubicecho/min-agent
+homepage: https://cubicecho.github.io/min-agent/
 ---
 
 min-agent is a chat agent you host yourself, pointed at whatever

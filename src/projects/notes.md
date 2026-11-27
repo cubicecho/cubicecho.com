@@ -2,7 +2,7 @@
 title: notes
 tagline: A local-first, web-first Markdown notes app.
 category: cloud
-order: 7
+order: 9
 repo: https://github.com/cubicecho/notes
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: task-server
 tagline: Scheduled AI tasks — a prompt, a cron trigger, your MCP tools, and the record of every run.
-category: ai
-order: 8
+category: agents
+order: 2
 repo: https://github.com/cubicecho/task_server
 homepage: https://cubicecho.github.io/task_server/
 ---
