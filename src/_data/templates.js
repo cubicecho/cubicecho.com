@@ -7,6 +7,9 @@
 // public repo, fetched at deploy time from `main`. So a change to a stack
 // reaches people when it is merged, not when the site deploys.
 //
+// `guide` links the stack to the guide that explains it (site only, not in the
+// feed).
+//
 // `env` is what the deploy form asks for. Keep it to what a person has to
 // decide (addresses, secrets, paths); everything else in the compose file has a
 // default. Every name must match a ${VAR} in that compose file — the build
@@ -30,6 +33,7 @@ const postgresPassword = secret("POSTGRES_PASSWORD", "Postgres password");
 module.exports = [
   {
     slug: "personal-cloud",
+    guide: "/guides/personal-cloud/",
     title: "Cubic Echo: personal cloud",
     description:
       "heautou (sign-in), ethos (habits), telos (todos), philotes (people), eunomia (time) and engrafo (documents), with one shared Postgres.",
@@ -47,6 +51,7 @@ module.exports = [
   },
   {
     slug: "mcp",
+    guide: "/guides/mcp/",
     title: "Cubic Echo: MCP servers",
     description:
       "mcp-skills-manager (skills), mcp-ragdown (search over your Markdown notes) and mcp-actual (Actual Budget).",
@@ -77,6 +82,7 @@ module.exports = [
   },
   {
     slug: "ai-router",
+    guide: "/guides/ai-infrastructure/",
     title: "Cubic Echo: AI, all in one",
     description:
       "ai-router (models, MCP servers and agents in one app), min-agent (chat) and task-server (scheduled prompts), with one shared Postgres.",
@@ -91,6 +97,7 @@ module.exports = [
   },
   {
     slug: "ai-piecemeal",
+    guide: "/guides/ai-infrastructure/",
     title: "Cubic Echo: AI, piecemeal",
     description:
       "mcp-router (tools), llm-router (models) and agent-router (agents) as separate services, with min-agent, task-server and one shared Postgres.",
