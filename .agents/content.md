@@ -110,6 +110,14 @@ projects together (layout `guide.njk`, URL `/guides/<slug>/`). Frontmatter:
 of project slugs rendered as cards at the end. An unknown slug fails the build.
 The home page shows the guides first, under "Start here".
 
+The section nav beside a guide is built from its headings at build time, so
+there is nothing to maintain by hand: use `##` for sections and `###` for
+subsections under them (deeper levels are not listed), and keep heading text
+short, since it is also the nav label and the anchor (`## The stack` →
+`#the-stack`). Renaming a heading changes its anchor, so check for links to it.
+Write headings in Markdown, not raw `<h2>` with attributes, or the nav will
+not pick them up. See [styling.md](./styling.md#guide-pages) for how it works.
+
 Each guide carries compose files covering every project in it, in
 `src/_includes/compose/*.yml`, included inline and passthrough-copied to
 `/compose/<file>.yml`. Readers paste them into Portainer, Dockhand and the
