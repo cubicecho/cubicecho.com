@@ -91,8 +91,6 @@ services:
       - task-server-data:/data
 
   # One Postgres for the apps that need one, one database each.
-
-  # One Postgres for the apps that need one, one database each.
   postgres:
     image: postgres:17-alpine
     restart: unless-stopped

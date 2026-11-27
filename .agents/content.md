@@ -111,8 +111,9 @@ of project slugs rendered as cards at the end. An unknown slug fails the build.
 The home page shows the guides first, under "Start here".
 
 Each guide carries compose files covering every project in it, in
-`src/_includes/compose/*.yml`, included inline and passthrough-copied to
-`/compose/<file>.yml`. Readers paste them into Portainer, Dockhand and the
+`templates/<slug>/docker-compose.yml` at the repo root (so a stack manager can
+deploy them from this repo), shown in a guide with `{% composeFile "<slug>" %}` and
+passthrough-copied to `/templates/<slug>/docker-compose.yml`. Readers paste them into Portainer, Dockhand and the
 like, so guides show the file and the env vars to set, not `docker` commands,
 and alternatives are separate files rather than compose profiles (stack UIs
 handle profiles poorly). Conventions:

@@ -20,7 +20,7 @@ and every app after it gets "Sign in with Heautou" by pasting one URL.
 One compose file runs all six apps, one shared Postgres (one database per app),
 and the object storage engrafo keeps files in. Paste it into a new stack in
 Portainer, Dockhand or whatever you use, or
-[download it](/compose/personal-cloud.yml). Don't want an app? Delete its
+[download it](/templates/personal-cloud/docker-compose.yml). Don't want an app? Delete its
 service.
 
 Set these in the stack's environment; generate each secret with
@@ -49,7 +49,7 @@ default. Point an app at your own Postgres with its `*_DATABASE_URL`.
 <summary><code>personal-cloud.yml</code> — show the compose file</summary>
 
 ```yaml
-{% include "compose/personal-cloud.yml" %}
+{% composeFile "personal-cloud" %}
 ```
 
 </details>

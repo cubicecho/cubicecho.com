@@ -1,12 +1,19 @@
+const fs = require("node:fs");
+const path = require("node:path");
 const categories = require("./src/_data/categories.js");
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/css": "css" });
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/CNAME": "CNAME" });
-  // The guides' compose files: included inline in each guide, and served at
-  // /compose/<guide>.yml for `curl -O`.
-  eleventyConfig.addPassthroughCopy({ "src/_includes/compose": "compose" });
+  // The stacks' compose files live in templates/<slug>/docker-compose.yml, so a
+  // stack manager can deploy them straight from this repo. They are served at
+  // /templates/<slug>/docker-compose.yml, and a guide shows one with
+  // {% composeFile "<slug>" %}.
+  eleventyConfig.addPassthroughCopy("templates");
+  eleventyConfig.addShortcode("composeFile", (slug) =>
+    fs.readFileSync(path.join(__dirname, "templates", slug, "docker-compose.yml"), "utf8").trimEnd(),
+  );
 
   eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
 
