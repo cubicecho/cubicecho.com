@@ -1,7 +1,7 @@
 ---
 title: Start a personal cloud
 summary: Self-hosted apps for habits, todos, people, time and documents — with one sign-in in front of all of them.
-order: 2
+order: 3
 projects: [heautou, ethos, telos, philotes, eunomia, engrafo]
 ---
 

@@ -17,6 +17,9 @@ the one for a stack once it's running. The registry is one URL:
 {{ site.url }}/templates.json
 ```
 
+On a QNAP NAS? Container Station reads a different format; see
+[Quickstart: QNAP Container Station](/guides/qnap/).
+
 ## 1. Add the registry
 
 ### Portainer

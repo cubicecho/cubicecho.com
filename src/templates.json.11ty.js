@@ -41,7 +41,7 @@ module.exports = class {
         platform: "linux",
         logo: `${site.url}/assets/logo.svg`,
         repository: { url: REPO, stackfile: stackfile(t.slug) },
-        env: t.env,
+        env: t.env.map(({ optional, ...e }) => e),
       })),
     };
     return `${JSON.stringify(feed, null, 2)}\n`;
