@@ -2,7 +2,7 @@
 title: philotes
 tagline: A personal CRM for the people who matter — not your pipeline.
 category: cloud
-order: 5
+order: 3
 repo: https://github.com/cubicecho/philotes
 homepage: https://cubicecho.github.io/philotes/
 ---

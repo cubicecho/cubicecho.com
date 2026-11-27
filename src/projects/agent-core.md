@@ -1,9 +1,10 @@
 ---
 title: agent-core
 tagline: The endpoint-agnostic half of an OpenAI-compatible agent loop.
-category: ai
-order: 10
+category: libs
+order: 1
 repo: https://github.com/cubicecho/agent-core
+homepage: https://cubicecho.github.io/agent-core/
 npm: https://www.npmjs.com/package/@cubicecho/agent-core
 ---
 

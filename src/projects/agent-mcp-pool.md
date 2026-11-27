@@ -1,8 +1,8 @@
 ---
 title: agent-mcp-pool
 tagline: A pool of long-lived MCP clients, exposing every server's tools to an agent loop.
-category: ai
-order: 11
+category: libs
+order: 2
 repo: https://github.com/cubicecho/agent-mcp-pool
 npm: https://www.npmjs.com/package/@cubicecho/agent-mcp-pool
 ---

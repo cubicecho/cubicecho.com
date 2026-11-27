@@ -2,7 +2,7 @@
 title: auto-cal-ha-integration
 tagline: Auto Cal's schedule and todo lists as Home Assistant entities.
 category: cloud
-order: 9
+order: 10
 repo: https://github.com/cubicecho/auto_cal_ha_integration
 ---
 

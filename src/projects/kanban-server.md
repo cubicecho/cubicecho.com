@@ -1,10 +1,14 @@
 ---
 title: kanban-server
 tagline: A kanban board worked by agents — the lanes of the board are the pipeline.
-category: ai
-order: 9
+category: agents
+order: 3
+status: deprecated
 repo: https://github.com/cubicecho/kanban-server
 ---
+
+**Deprecated.** The repo is archived. The idea of a board worked by agents
+lives on in [telos](/projects/telos/), whose lanes can each carry an agent.
 
 Describe what you want; it goes on the board as one card. The first lane holds
 a decomposer that breaks that card into the cards which carry the work out, and

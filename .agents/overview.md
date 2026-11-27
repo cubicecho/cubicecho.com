@@ -16,16 +16,15 @@ repo's own GitHub Pages site — this one points outward.
 ## Page structure
 
 ```
-/                  → home: hero + one section per group, all 32 projects
-/ai/               → AI & Agents
-/cloud/            → Personal Cloud
-/dev/              → Dev Tools
-/apps/             → Apps
+/                  → home: hero, guides, then one section per group
+/guides/           → getting-started guides
+/guides/<slug>/    → one guide
+/<group>/          → one page per group in categories.js (/mcp/, /cloud/, …)
 /about/            → short blurb about the org
 /projects/<slug>/  → one page per project
 ```
 
-The four group pages are one template (`src/group.njk`) paginated over
+The group pages are one template (`src/group.njk`) paginated over
 `src/_data/categories.js`, and the home page renders the same groups as
 sections. Adding a group is a data change; see [content.md](./content.md).
 
@@ -36,8 +35,8 @@ npm / demo), and a pointer to the repo README for full docs.
 
 - **[Eleventy 3.x](https://www.11ty.dev/)** with the default Nunjucks engine.
 - Templates in `src/_includes/`: `base.njk` (layout), `project.njk` (project
-  page layout), `project-card.njk` (the card partial shared by the home and
-  group pages), `mark.njk` (the inline logo).
+  page layout), `project-card.njk` (the card partial shared by the home, group
+  and guide pages), `guide.njk` and `guide-card.njk`, `mark.njk` (the inline logo).
 - Project data in `src/projects/*.md`, one file per project, with shared
   frontmatter in `src/projects/projects.json`.
 - Groups in `src/_data/categories.js`; site-wide config in `src/_data/site.js`.

@@ -1,0 +1,16 @@
+---
+layout: base.njk
+title: Guides
+permalink: /guides/
+description: Cubic Echo — getting-started guides that put several projects together.
+---
+<section class="hero">
+  <h1>Guides</h1>
+  <p>Where to start. Each guide picks the few projects that work together, says what order to stand them up in, and how they connect.</p>
+</section>
+
+<ul class="project-grid guide-grid">
+  {% for guide in collections.guide %}
+    {% include "guide-card.njk" %}
+  {% endfor %}
+</ul>

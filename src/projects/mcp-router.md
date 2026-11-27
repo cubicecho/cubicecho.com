@@ -1,7 +1,7 @@
 ---
 title: mcp-router
 tagline: An MCP gateway — install, run, and re-expose many MCP servers behind one endpoint.
-category: ai
+category: infra
 order: 1
 repo: https://github.com/cubicecho/mcp-router
 homepage: https://cubicecho.github.io/mcp-router/

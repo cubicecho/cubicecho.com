@@ -1,8 +1,8 @@
 ---
 title: mcp-actual
 tagline: An MCP server for Actual Budget — accounts, balances and transactions, over MCP.
-category: ai
-order: 5
+category: mcp
+order: 3
 repo: https://github.com/cubicecho/mcp-actual
 ---
 

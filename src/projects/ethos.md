@@ -2,7 +2,7 @@
 title: ethos
 tagline: Just habits — cadence, completions, cues.
 category: cloud
-order: 3
+order: 1
 repo: https://github.com/cubicecho/ethos
 ---
 

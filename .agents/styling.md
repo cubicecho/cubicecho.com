@@ -51,10 +51,9 @@ and have it override the same tokens.
   readability.
 - The home page stacks one `.group` section per category, each with a
   `.group-title` linking to that group's page and a `.group-blurb` under it.
-  With 32 cards the page is long on purpose — the nav and the group pages are
+  With 40-odd cards the page is long on purpose — the nav and the group pages are
   there for anyone who wants a subset.
-- The header nav wraps (`flex-wrap`), because there are now six links plus the
-  wordmark. The current page is marked with `aria-current="page"` and styled
+- The header nav wraps (`flex-wrap`), in case the wordmark and links don't fit one row. The current page is marked with `aria-current="page"` and styled
   through that attribute rather than a class.
 
 ## Don'ts

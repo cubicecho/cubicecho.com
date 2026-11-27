@@ -1,8 +1,8 @@
 ---
 title: mcp-zeromem
 tagline: Conversational memory for agents that costs zero tokens to maintain.
-category: ai
-order: 3
+category: mcp
+order: 5
 repo: https://github.com/cubicecho/mcp-zeromem
 ---
 

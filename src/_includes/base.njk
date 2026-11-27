@@ -19,10 +19,8 @@
         <span class="name">{{ site.name }}</span>
       </a>
       <nav>
+        <a href="/guides/"{% if page.url.startsWith('/guides/') %} aria-current="page"{% endif %}>Guides</a>
         <a href="/"{% if page.url == '/' %} aria-current="page"{% endif %}>Projects</a>
-        {% for category in categories %}
-          <a href="/{{ category.slug }}/"{% if page.url == '/' + category.slug + '/' %} aria-current="page"{% endif %}>{{ category.nav }}</a>
-        {% endfor %}
         <a href="/about/"{% if page.url == '/about/' %} aria-current="page"{% endif %}>About</a>
         <a href="{{ site.github }}" rel="noopener">GitHub ↗</a>
       </nav>

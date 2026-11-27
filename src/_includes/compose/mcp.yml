@@ -1,0 +1,61 @@
+# Cubic Echo — MCP servers
+# mcp-skills-manager, mcp-ragdown and mcp-actual.
+# https://cubicecho.com/guides/mcp/
+#
+# Don't use Actual Budget? Delete the mcp-actual service and its volume.
+#
+# Set in the stack's environment (generate tokens with `openssl rand -hex 32`):
+#   SKILLS_TOKEN, RAGDOWN_TOKEN, ACTUAL_MCP_TOKEN
+#   NOTES_DIR               the Markdown folder mcp-ragdown indexes (default ./notes)
+#   ACTUAL_SERVER_URL, ACTUAL_PASSWORD, ACTUAL_SYNC_ID   for mcp-actual
+#
+# A server whose token is left empty generates one and prints it to its logs.
+name: cubicecho-mcp
+
+services:
+  mcp-skills-manager:
+    image: ghcr.io/cubicecho/mcp-skills-manager:latest
+    restart: unless-stopped
+    environment:
+      MCP_SKILLS_TOKEN: ${SKILLS_TOKEN:-}
+      SECURE_LOCAL_NET: ${SECURE_LOCAL_NET:-}
+    ports:
+      - "${SKILLS_PORT:-3100}:3000"
+    volumes:
+      - skills-data:/data
+
+  mcp-ragdown:
+    image: vantreeseba/mcp-ragdown:latest
+    restart: unless-stopped
+    environment:
+      RAGDOWN_TOKEN: ${RAGDOWN_TOKEN:-}
+      RAGDOWN_READ_ONLY: ${RAGDOWN_READ_ONLY:-false}
+      RAGDOWN_PUBLIC_URL: ${RAGDOWN_PUBLIC_URL:-}
+      SECURE_LOCAL_NET: ${SECURE_LOCAL_NET:-false}
+    ports:
+      - "${RAGDOWN_PORT:-3102}:3000"
+    volumes:
+      - ${NOTES_DIR:-./notes}:/docs
+      - ragdown-data:/data
+
+  mcp-actual:
+    image: ghcr.io/cubicecho/mcp-actual:latest
+    restart: unless-stopped
+    environment:
+      ACTUAL_SERVER_URL: ${ACTUAL_SERVER_URL:-}
+      ACTUAL_PASSWORD: ${ACTUAL_PASSWORD:-}
+      ACTUAL_SYNC_ID: ${ACTUAL_SYNC_ID:-}
+      ACTUAL_ENCRYPTION_PASSWORD: ${ACTUAL_ENCRYPTION_PASSWORD:-}
+      ACTUAL_ENABLE_WRITES: ${ACTUAL_ENABLE_WRITES:-}
+      MCP_ACTUAL_TOKEN: ${ACTUAL_MCP_TOKEN:-}
+      SECURE_LOCAL_NET: ${SECURE_LOCAL_NET:-}
+      DATA_DIR: /data
+    ports:
+      - "${ACTUAL_MCP_PORT:-3101}:3000"
+    volumes:
+      - actual-data:/data
+
+volumes:
+  skills-data:
+  ragdown-data:
+  actual-data:

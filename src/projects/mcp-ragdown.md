@@ -1,8 +1,8 @@
 ---
 title: mcp-ragdown
 tagline: Hybrid RAG search over a folder of Markdown files, as an MCP server and an agent hook.
-category: ai
-order: 4
+category: mcp
+order: 2
 repo: https://github.com/cubicecho/mcp-ragdown
 ---
 

@@ -1,0 +1,200 @@
+# Cubic Echo — personal cloud
+# heautou (sign-in), ethos, telos, philotes, eunomia, engrafo, and one shared
+# Postgres. https://cubicecho.com/guides/personal-cloud/
+#
+# Set in the stack's environment (generate each with `openssl rand -hex 32`):
+#   PUBLIC_HOST          this machine's LAN address or hostname, e.g. 192.168.1.10
+#   POSTGRES_PASSWORD
+#   ETHOS_AUTH_SECRET, TELOS_AUTH_SECRET, PHILOTES_AUTH_SECRET, ENGRAFO_AUTH_SECRET
+#   RUSTFS_PASSWORD      engrafo's object storage
+#
+# Don't want an app? Delete its service (and its CREATE DATABASE line).
+# Every port, URL and database URL below can be overridden the same way. Set an
+# app's *_DATABASE_URL to use your own Postgres instead of the bundled one.
+# Sign-in: pair each app with heautou using a setup URL (see the guide), or
+# add OIDC_ISSUER / OIDC_CLIENT_ID / OIDC_CLIENT_SECRET to that app.
+name: cubicecho-cloud
+
+services:
+  heautou:
+    image: ghcr.io/cubicecho/heautou:latest
+    restart: unless-stopped
+    environment:
+      ISSUER_URL: ${HEAUTOU_ISSUER_URL:-http://${PUBLIC_HOST:-localhost}:${HEAUTOU_PORT:-3000}/oidc}
+      DATABASE_URL: ${HEAUTOU_DATABASE_URL:-}   # empty: embedded PGlite in /data
+      SECRET_KEY: ${HEAUTOU_SECRET_KEY:-}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+      NODE_ENV: production
+    ports:
+      - "${HEAUTOU_PORT:-3000}:3000"
+    volumes:
+      - heautou-data:/data
+
+  ethos:
+    image: vantreeseba/ethos:latest
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      DATABASE_URL: ${ETHOS_DATABASE_URL:-postgres://cubicecho:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/ethos}
+      BETTER_AUTH_SECRET: ${ETHOS_AUTH_SECRET:?set ETHOS_AUTH_SECRET}
+      APP_URL: ${ETHOS_URL:-http://${PUBLIC_HOST:-localhost}:${ETHOS_PORT:-3010}}
+      MCP_ENABLED: ${ETHOS_MCP_ENABLED:-false}
+      SMTP_URL: ${SMTP_URL:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SECURE_LOCAL_NET: ${SECURE_LOCAL_NET:-false}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+      NODE_ENV: production
+      PORT: 3000
+    ports:
+      - "${ETHOS_PORT:-3010}:3000"
+
+  telos:
+    image: vantreeseba/telos:latest
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      DATABASE_URL: ${TELOS_DATABASE_URL:-postgres://cubicecho:${POSTGRES_PASSWORD}@postgres:5432/telos}
+      BETTER_AUTH_SECRET: ${TELOS_AUTH_SECRET:?set TELOS_AUTH_SECRET}
+      APP_URL: ${TELOS_URL:-http://${PUBLIC_HOST:-localhost}:${TELOS_PORT:-3011}}
+      AI_ENABLED: ${TELOS_AI_ENABLED:-}
+      SMTP_URL: ${SMTP_URL:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SECURE_LOCAL_NET: ${SECURE_LOCAL_NET:-false}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+      NODE_ENV: production
+      PORT: 3001
+    ports:
+      - "${TELOS_PORT:-3011}:3001"
+
+  philotes:
+    image: vantreeseba/philotes:latest
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      DATABASE_URL: ${PHILOTES_DATABASE_URL:-postgres://cubicecho:${POSTGRES_PASSWORD}@postgres:5432/philotes}
+      BETTER_AUTH_SECRET: ${PHILOTES_AUTH_SECRET:?set PHILOTES_AUTH_SECRET}
+      APP_URL: ${PHILOTES_URL:-http://${PUBLIC_HOST:-localhost}:${PHILOTES_PORT:-3012}}
+      SMTP_URL: ${SMTP_URL:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SECURE_LOCAL_NET: ${SECURE_LOCAL_NET:-false}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+      NODE_ENV: production
+    ports:
+      - "${PHILOTES_PORT:-3012}:3000"
+    volumes:
+      - philotes-data:/data
+
+  eunomia:
+    image: ghcr.io/cubicecho/eunomia:latest
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      DATABASE_URL: ${EUNOMIA_DATABASE_URL:-postgres://cubicecho:${POSTGRES_PASSWORD}@postgres:5432/eunomia}
+      BETTER_AUTH_SECRET: ${EUNOMIA_AUTH_SECRET:-}   # generated if unset
+      BETTER_AUTH_URL: ${EUNOMIA_URL:-http://${PUBLIC_HOST:-localhost}:${EUNOMIA_PORT:-3013}}
+      DISABLE_SIGNUP: ${EUNOMIA_DISABLE_SIGNUP:-false}
+      ALLOWED_EMAILS: ${EUNOMIA_ALLOWED_EMAILS:-}
+      LLM_BASE_URL: ${EUNOMIA_LLM_BASE_URL:-}   # any OpenAI-compatible endpoint
+      LLM_MODEL: ${EUNOMIA_LLM_MODEL:-}
+      LLM_API_KEY: ${EUNOMIA_LLM_API_KEY:-}
+      TZ: ${TZ:-UTC}
+      PORT: "4000"
+    ports:
+      - "${EUNOMIA_PORT:-3013}:4000"
+
+  engrafo:
+    image: vantreeseba/engrafo:latest
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+      rustfs-init: { condition: service_completed_successfully }
+    environment:
+      DATABASE_URL: ${ENGRAFO_DATABASE_URL:-postgres://cubicecho:${POSTGRES_PASSWORD}@postgres:5432/engrafo}
+      BETTER_AUTH_SECRET: ${ENGRAFO_AUTH_SECRET:?set ENGRAFO_AUTH_SECRET}
+      APP_URL: ${ENGRAFO_URL:-http://${PUBLIC_HOST:-localhost}:${ENGRAFO_PORT:-3014}}
+      S3_ENDPOINT: ${ENGRAFO_S3_ENDPOINT:-http://rustfs:9000}
+      S3_PUBLIC_ENDPOINT: ${ENGRAFO_S3_PUBLIC_ENDPOINT:-http://${PUBLIC_HOST:-localhost}:${RUSTFS_PORT:-9000}}
+      S3_BUCKET: ${ENGRAFO_S3_BUCKET:-engrafo}
+      S3_TEXT_BUCKET: ${ENGRAFO_S3_TEXT_BUCKET:-engrafo-text}
+      S3_ACCESS_KEY_ID: ${ENGRAFO_S3_ACCESS_KEY_ID:-engrafo}
+      S3_SECRET_ACCESS_KEY: ${ENGRAFO_S3_SECRET_ACCESS_KEY:-${RUSTFS_PASSWORD:?set RUSTFS_PASSWORD}}
+      OCR_ENABLED: ${ENGRAFO_OCR_ENABLED:-true}
+      OCR_LANGUAGES: ${ENGRAFO_OCR_LANGUAGES:-eng}
+      SECURE_LOCAL_NET: ${SECURE_LOCAL_NET:-false}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+      TZ: ${TZ:-UTC}
+      NODE_ENV: production
+    ports:
+      - "${ENGRAFO_PORT:-3014}:3004"
+
+  # One Postgres for every app, one database each. pgvector because engrafo
+  # needs it; it is plain Postgres for the others.
+  postgres:
+    image: pgvector/pgvector:pg17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cubicecho
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: cubicecho
+    configs:
+      - source: create-databases
+        target: /docker-entrypoint-initdb.d/create-databases.sql
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cubicecho -d cubicecho"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Object storage for engrafo, and a one-shot job that creates its buckets.
+  rustfs:
+    image: rustfs/rustfs:latest
+    restart: unless-stopped
+    environment:
+      RUSTFS_ACCESS_KEY: engrafo
+      RUSTFS_SECRET_KEY: ${RUSTFS_PASSWORD}
+      RUSTFS_CONSOLE_ENABLE: "true"
+      RUSTFS_CORS_ALLOWED_ORIGINS: "*"
+    ports:
+      - "${RUSTFS_PORT:-9000}:9000"
+      - "${RUSTFS_CONSOLE_PORT:-9001}:9001"
+    volumes:
+      - rustfs-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  rustfs-init:
+    image: rustfs/rc:latest
+    depends_on:
+      rustfs: { condition: service_healthy }
+    environment:
+      RUSTFS_PASSWORD: ${RUSTFS_PASSWORD}
+    entrypoint: >
+      sh -c "rc alias set local http://rustfs:9000 engrafo \"$$RUSTFS_PASSWORD\" &&
+             rc bucket create --ignore-existing local/engrafo &&
+             rc bucket create --ignore-existing local/engrafo-text"
+    restart: "no"
+
+# Runs once, when the Postgres volume is first created.
+configs:
+  create-databases:
+    content: |
+      CREATE DATABASE ethos;
+      CREATE DATABASE telos;
+      CREATE DATABASE philotes;
+      CREATE DATABASE eunomia;
+      CREATE DATABASE engrafo;
+
+volumes:
+  heautou-data:
+  philotes-data:
+  postgres-data:
+  rustfs-data:

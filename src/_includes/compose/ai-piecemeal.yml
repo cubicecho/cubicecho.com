@@ -1,0 +1,126 @@
+# Cubic Echo — AI infrastructure, piecemeal
+# mcp-router (tools), llm-router (models), agent-router (agents, no UI),
+# min-agent, task-server, and one shared Postgres. agent-router calls its models
+# through llm-router. https://cubicecho.com/guides/ai-infrastructure/
+#
+# Set in the stack's environment (generate secrets with `openssl rand -hex 32`):
+#   PUBLIC_HOST            this machine's LAN address or hostname
+#   POSTGRES_PASSWORD
+#   LLM_ROUTER_TOKEN         agent-router sends it to llm-router, so set it
+#                            rather than letting llm-router generate one
+#   AGENT_ROUTER_ADMIN_TOKEN admin on agent-router's /graphql
+#   AGENT_ROUTER_SRC         path to a checkout of agent-router (no image yet)
+# Optional: MCP_ROUTER_TOKEN (generated and logged if empty), OPENAI_API_KEY.
+#
+# Set an app's *_DATABASE_URL to use your own Postgres instead of the bundled one.
+name: cubicecho-ai
+
+services:
+  mcp-router:
+    image: vantreeseba/mcp-router:latest
+    restart: unless-stopped
+    environment:
+      MCP_ROUTER_TOKEN: ${MCP_ROUTER_TOKEN:-}
+      SECURE_LOCAL_NET: ${SECURE_LOCAL_NET:-}
+    ports:
+      - "${MCP_ROUTER_PORT:-3200}:3000"
+    volumes:
+      - mcp-router-data:/data
+
+  llm-router:
+    image: ghcr.io/cubicecho/llm-router:latest
+    restart: unless-stopped
+    environment:
+      LLM_ROUTER_TOKEN: ${LLM_ROUTER_TOKEN:-}
+      SECURE_LOCAL_NET: ${SECURE_LOCAL_NET:-}
+    ports:
+      - "${LLM_ROUTER_PORT:-3201}:3000"
+    volumes:
+      - llm-router-data:/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # reach a model server on the host
+
+  agent-router:
+    # No published image yet: runs a checkout of the repo on Node 26.
+    image: node:26-slim
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+    working_dir: /app
+    command: sh -c "npm ci && npm start"
+    environment:
+      DATABASE_URL: ${AGENT_ROUTER_DATABASE_URL:-postgres://cubicecho:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/agent_router}
+      # Agents name models as <provider>/<model>; "llm/ollama/qwen3:8b" goes to
+      # llm-router, which passes "ollama/qwen3:8b" on to its own provider.
+      AGENT_ROUTER_PROVIDERS: ${AGENT_ROUTER_PROVIDERS:-[{"name":"llm","baseUrl":"http://llm-router:3000/v1","apiKey":"${LLM_ROUTER_TOKEN:-}"}]}
+      AGENT_ROUTER_ADMIN_TOKEN: ${AGENT_ROUTER_ADMIN_TOKEN:-}
+      SECURE_LOCAL_NET: ${AGENT_ROUTER_SECURE_LOCAL_NET:-}
+      NODE_ENV: production
+      PORT: 3100
+    ports:
+      - "${AGENT_ROUTER_PORT:-3205}:3100"
+    volumes:
+      - ${AGENT_ROUTER_SRC:-./agent-router}:/app
+
+  min-agent:
+    image: ghcr.io/cubicecho/min-agent:latest
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      DATABASE_URL: ${MIN_AGENT_DATABASE_URL:-postgres://cubicecho:${POSTGRES_PASSWORD}@postgres:5432/min_agent}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      PORT: 8787
+    ports:
+      - "${MIN_AGENT_PORT:-3203}:8787"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  task-server:
+    image: ghcr.io/cubicecho/task_server:latest
+    restart: unless-stopped
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      DATABASE_URL: ${TASK_SERVER_DATABASE_URL:-postgres://cubicecho:${POSTGRES_PASSWORD}@postgres:5432/task_server}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      TZ: ${TZ:-UTC}
+    ports:
+      - "${TASK_SERVER_PORT:-3204}:8787"
+    volumes:
+      - task-server-data:/data
+
+  # One Postgres for the apps that need one, one database each.
+
+  # One Postgres for the apps that need one, one database each.
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cubicecho
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: cubicecho
+    configs:
+      - source: create-databases
+        target: /docker-entrypoint-initdb.d/create-databases.sql
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cubicecho -d cubicecho"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+# Runs once, when the Postgres volume is first created.
+configs:
+  create-databases:
+    content: |
+      CREATE DATABASE agent_router;
+      CREATE DATABASE min_agent;
+      CREATE DATABASE task_server;
+
+volumes:
+  mcp-router-data:
+  llm-router-data:
+  task-server-data:
+  postgres-data:

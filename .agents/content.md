@@ -8,36 +8,55 @@ non-archived repos in the `cubicecho` GitHub org, and nothing else.** A repo
 that leaves the org, or a personal repo that never joined it, does not get a
 card here.
 
-Projects are partitioned into four groups on the `category` frontmatter field.
+Projects are partitioned into groups on the `category` frontmatter field.
 The groups are declared once, in [`src/_data/categories.js`](../src/_data/categories.js),
 and everything else is generated from that list:
 
-- `.eleventy.js` builds one collection per group — `projectAi`, `projectCloud`,
-  `projectDev`, `projectApps`.
+- `.eleventy.js` builds one collection per group — `projectMcp`, `projectInfra`,
+  `projectCloud`, and so on.
 - `src/index.njk` renders one home section per group, in declaration order.
-- `src/group.njk` paginates over the list to produce `/ai/`, `/cloud/`,
-  `/dev/`, `/apps/`.
-- `src/_includes/base.njk` generates the header nav from it.
+- `src/group.njk` paginates over the list to produce one page per group.
 
-So **adding or renaming a group is a change to `categories.js` alone.** Order
-within a group comes from the `order` frontmatter field, and each group has its
-own sequence starting at 1.
+The header nav does not list the groups (there are too many); it links Guides,
+the home page and About. So **adding or renaming a group is a change to
+`categories.js` alone.** Order within a group comes from the `order`
+frontmatter field, and each group has its own sequence starting at 1.
 
 | group | slug | what belongs in it |
 | --- | --- | --- |
-| AI & Agents | `ai` | MCP servers, agent runtimes, and the libraries under them. |
-| Personal Cloud | `cloud` | Self-hosted apps for one person's life, plus the dashboard that stitches them. |
+| MCP Servers | `mcp` | MCP servers an agent calls for tools. |
+| AI Infrastructure | `infra` | Routers in front of MCP servers, model servers, and agents. |
+| AI Apps | `agents` | Agents people run and use: chat, scheduled tasks. |
+| AI Libraries | `libs` | The published libraries the AI apps are built on. |
+| Personal Cloud | `cloud` | Self-hosted apps for one person's life, and the sign-in in front of them. |
 | Dev Tools | `dev` | Libraries meant to be built *with*, and the org's shared scaffolding. |
 | Apps | `apps` | Standalone apps that run in a browser and need nothing behind them. **The default** when `category` is unset. |
+| Other | `other` | Projects that span the rest. |
 
-Current lineup — 32 projects, one per org repo:
+Current lineup:
 
 | group | projects (in order) |
 | --- | --- |
-| `ai` | mcp-router, mcp-skills-manager, mcp-zeromem, mcp-ragdown, mcp-actual, google-mcp-suite-docker, min-agent, task-server, kanban-server, agent-core, agent-mcp-pool |
-| `cloud` | personal-dashboard, auto-cal, ethos, telos, philotes, eunomia, notes, engrafo, auto-cal-ha-integration |
+| `mcp` | mcp-skills-manager, mcp-ragdown, mcp-actual, mcp-zeromem |
+| `infra` | mcp-router, llm-router, ai-router |
+| `agents` | min-agent, task-server, kanban-server (deprecated) |
+| `libs` | agent-core, agent-mcp-pool, mcp-discovery |
+| `cloud` | ethos, telos, philotes, eunomia, engrafo, heautou, auto-cal, notes, auto-cal-ha-integration |
 | `dev` | cubeui, cubesite, graphql-mcp, drizzle-graphql, graphql-casl, graphql-zod, graphql-mocks, graphql-codegen-field-descriptions, cubicecho.com |
 | `apps` | fcb1010, rp-tools, ravocal |
+| `other` | symphony |
+
+The org has more repos than cards (personal-dashboard, left off on purpose because symphony covers it;
+google-mcp-suite-docker, dropped because upstream google-mcp-suite now serves
+HTTP itself — the site lists only cubicecho projects, so it is not linked;
+Home Assistant integrations, s3-artifacts-mcp,
+ephemeris, personal-homepage, …); `gh repo list` below shows the gap.
+
+### Status
+
+An optional `status:` frontmatter field (`early`, `deprecated`) renders as a
+badge on the card and the project page. An archived repo keeps its card with
+`status: deprecated` and a line at the top of the body saying what replaced it.
 
 Two slugs deliberately differ from their repo name, because the file slug is
 the URL and the repo name is not a good one: `task-server` →
@@ -68,6 +87,7 @@ repo, Pages site, card.
                                     #   do not name this `site` — that key
                                     #   collides with src/_data/site.js.
    npm: https://www.npmjs.com/...   # optional — only if actually published
+   status: early | deprecated       # optional — shown as a badge
    demo: https://...                # optional
    ---
    ```
@@ -81,6 +101,30 @@ repo, Pages site, card.
    repos only make sense next to each other. End by trusting `project.njk` to
    render the "Full documentation lives in the README" pointer when `repo` is
    set.
+
+## Guides
+
+`src/guides/*.md` are getting-started guides that walk through several
+projects together (layout `guide.njk`, URL `/guides/<slug>/`). Frontmatter:
+`title`, `summary` (shown on the guide card), `order`, and `projects` — a list
+of project slugs rendered as cards at the end. An unknown slug fails the build.
+The home page shows the guides first, under "Start here".
+
+Each guide carries compose files covering every project in it, in
+`src/_includes/compose/*.yml`, included inline and passthrough-copied to
+`/compose/<file>.yml`. Readers paste them into Portainer, Dockhand and the
+like, so guides show the file and the env vars to set, not `docker` commands,
+and alternatives are separate files rather than compose profiles (stack UIs
+handle profiles poorly). Conventions:
+images from each repo's own compose or release workflow; every port, URL and
+`DATABASE_URL` an env var with a default (`${ETHOS_DATABASE_URL:-postgres://…}`);
+one shared Postgres with an inline `configs:` init script creating a database
+per app; unique host ports across all three files (cloud 30xx, MCP 31xx, AI
+32xx); optional services are ones you delete. Check with
+`docker compose -f <file> config -q` after a change, and re-read the source
+repo's compose file when one of its apps changes.
+Only state how projects connect if a README says so. Nunjucks runs over
+Markdown here, so a literal `{{` in a code block needs `{% raw %}`.
 
 ## Keeping it in sync with the org
 
