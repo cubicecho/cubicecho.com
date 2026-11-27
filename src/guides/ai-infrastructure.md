@@ -29,15 +29,15 @@ There are three things to route, and two ways to run them:
 
 One compose file for each way. Both also run [min-agent](/projects/min-agent/),
 [task-server](/projects/task-server/) and a shared Postgres. Paste one into a
-new stack, or download it: [ai-router.yml](/compose/ai-router.yml) or
-[ai-piecemeal.yml](/compose/ai-piecemeal.yml).
+new stack, or download it: [ai-router.yml](/templates/ai-router/docker-compose.yml) or
+[ai-piecemeal.yml](/templates/ai-piecemeal/docker-compose.yml).
 
 Set these in the stack's environment; generate each secret with
 `openssl rand -hex 32`:
 
 | variable | stack | |
 | --- | --- | --- |
-| `PUBLIC_HOST` | both | this machine's LAN address or hostname |
+| `PUBLIC_HOST` | all in one | this machine's LAN address or hostname; ai-router builds its own URL from it |
 | `POSTGRES_PASSWORD` | both | the shared Postgres |
 | `AI_ROUTER_AUTH_SECRET` | all in one | ai-router's session secret |
 | `LLM_ROUTER_TOKEN` | piecemeal | llm-router's token; agent-router uses it too, so set it rather than letting one generate |
@@ -76,7 +76,7 @@ early, 0.x — expect it to move.
 <summary><code>ai-router.yml</code> — show the compose file</summary>
 
 ```yaml
-{% include "compose/ai-router.yml" %}
+{% composeFile "ai-router" %}
 ```
 
 </details>
@@ -87,7 +87,7 @@ early, 0.x — expect it to move.
 <summary><code>ai-piecemeal.yml</code> — show the compose file</summary>
 
 ```yaml
-{% include "compose/ai-piecemeal.yml" %}
+{% composeFile "ai-piecemeal" %}
 ```
 
 </details>

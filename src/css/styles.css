@@ -428,3 +428,148 @@ main {
   border: 0;
   border-radius: 0 0 var(--radius) var(--radius);
 }
+
+/* guide pages — laid out like a manual: a section nav beside the prose.
+   The nav is generated from the guide's ## and ### headings (see the
+   `guideSections` filter in .eleventy.js) and renders twice: `.guide-sidebar`
+   on wide screens, `.toc-mobile` (a folded <details>) on narrow ones. */
+.guide-layout {
+  padding-top: 2rem;
+}
+.guide-main {
+  min-width: 0;
+}
+.guide-page .guide-main .prose {
+  padding-top: 0;
+}
+.guide-page .prose > :first-child {
+  margin-top: 0;
+}
+.guide-sidebar {
+  display: none;
+}
+
+.sidebar-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.toc {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+.toc ol {
+  list-style: none;
+  margin: 0.2rem 0 0.35rem;
+  padding: 0 0 0 0.85rem;
+}
+.toc li {
+  margin: 0;
+}
+.toc a {
+  display: block;
+  padding: 0.25rem 0 0.25rem 0.75rem;
+  border-left: 2px solid var(--line);
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.toc ol a {
+  font-size: 0.85rem;
+}
+.toc a:hover {
+  color: var(--fg);
+  text-decoration: none;
+}
+.toc a[aria-current] {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+.toc-mobile {
+  margin: 0 0 2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+.toc-mobile summary {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.toc-mobile[open] summary {
+  color: var(--fg);
+  border-bottom: 1px solid var(--line);
+}
+.toc-mobile .toc {
+  padding: 0.75rem 1rem;
+}
+
+@media (min-width: 56rem) {
+  .guide-layout {
+    display: grid;
+    grid-template-columns: 13rem minmax(0, 42rem);
+    gap: 3rem;
+    align-items: start;
+  }
+  .guide-sidebar {
+    display: block;
+    position: sticky;
+    top: 1.5rem;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+    padding-bottom: 1rem;
+  }
+  .guide-sidebar nav + nav {
+    margin-top: 2rem;
+  }
+  .toc-mobile {
+    display: none;
+  }
+}
+
+/* heading anchors: an id on every ## and ###, and a `#` link shown on hover */
+.guide-page .prose :is(h2, h3)[id] {
+  scroll-margin-top: 1.5rem;
+}
+.heading-anchor {
+  color: var(--muted);
+  font-weight: 400;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.heading-anchor:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+:is(h2, h3):hover > .heading-anchor,
+.heading-anchor:focus-visible {
+  opacity: 1;
+}
+@media (hover: none) {
+  .heading-anchor {
+    opacity: 0.5;
+  }
+}
+
+/* the folded compose files and wide tables scroll inside themselves */
+.guide-page .prose details.compose {
+  max-width: 100%;
+  min-width: 0;
+}
+.guide-page .prose details.compose pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.guide-page) {
+    scroll-behavior: smooth;
+  }
+}

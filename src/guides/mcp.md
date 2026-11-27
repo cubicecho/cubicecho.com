@@ -18,7 +18,7 @@ config file.
 ## The stack
 
 One compose file runs all three. Paste it into a new stack, or
-[download it](/compose/mcp.yml). Don't use Actual Budget? Delete the
+[download it](/templates/mcp/docker-compose.yml). Don't use Actual Budget? Delete the
 `mcp-actual` service.
 
 Set these in the stack's environment; generate tokens with
@@ -40,7 +40,7 @@ Set these in the stack's environment; generate tokens with
 <summary><code>mcp.yml</code> — show the compose file</summary>
 
 ```yaml
-{% include "compose/mcp.yml" %}
+{% composeFile "mcp" %}
 ```
 
 </details>

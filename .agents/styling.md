@@ -56,6 +56,42 @@ and have it override the same tokens.
 - The header nav wraps (`flex-wrap`), in case the wordmark and links don't fit one row. The current page is marked with `aria-current="page"` and styled
   through that attribute rather than a class.
 
+## Guide pages
+
+Guides (`src/guides/*.md`, layout `src/_includes/guide.njk`) read like a docs
+manual: the hero across the top, then a section nav beside the prose, then the
+project cards full width underneath. Nothing else on the site uses this layout,
+and its rules (`.guide-layout`, `.guide-sidebar`, `.toc`, `.toc-mobile`,
+`.heading-anchor`) live at the end of `styles.css`.
+
+- **Generated, not hand-written.** The `guideSections` filter in
+  `.eleventy.js` runs over the guide's rendered HTML and returns
+  `{ html, toc }`: every `<h2>`/`<h3>` gets an `id` (a slug of its text,
+  `-2`, `-3`… on a repeat) and a trailing `<a class="heading-anchor">#</a>`,
+  and `toc` lists the `##` headings with their `###` headings as children. No
+  markdown-it plugin or other dependency.
+- **Wide screens** (`min-width: 56rem`): a two-column grid, a 13rem sticky
+  sidebar and the prose at `minmax(0, 42rem)`, inside `--maxw`. The sidebar has
+  "Guides" first (every guide, the current one `aria-current="page"`), so it
+  doubles as the guide switcher, then "On this page" (the toc, `###`
+  indented). It
+  scrolls on its own if it is taller than the viewport.
+- **Narrow screens**: the sidebar is hidden and the same toc renders in a
+  folded `<details class="toc-mobile">` "On this page" block above the prose.
+  The toc is in the markup twice for this; CSS shows exactly one.
+- **Current section**: a small inline script at the end of `guide.njk` uses
+  IntersectionObserver to set `aria-current="true"` on the toc link for the
+  section in view (the last heading above the top quarter of the viewport, or
+  the last one on screen at the bottom of the page). The style hangs off that
+  attribute. Without JS the nav is plain links and everything else works.
+- Headings have `scroll-margin-top` so a jump does not tuck them under the
+  viewport edge; smooth scrolling is on only for guide pages and only under
+  `prefers-reduced-motion: no-preference`.
+- Tables and the folded compose `<details>` scroll inside themselves; the
+  grid column is `minmax(0, …)` and `.guide-main` has `min-width: 0`, so wide
+  content cannot push the page sideways. Check 375px for horizontal scroll
+  after touching any of this.
+
 ## Don'ts
 
 - Don't add Tailwind, styled-components, CSS modules, or scoped CSS-in-JS.

@@ -1,8 +1,31 @@
 ---
 layout: base.njk
 ---
-{# A getting-started guide. `projects` in the frontmatter lists the project
-   slugs it walks through; they render as cards at the end, in that order. #}
+{# A getting-started guide, laid out like a manual: the hero, then a section
+   nav beside the prose, then the project cards from the `projects` frontmatter.
+   The nav is built from the guide's own ## and ### headings by the
+   `guideSections` filter in .eleventy.js, which also gives each one an id and
+   a `#` link. It renders twice: a sticky sidebar on wide screens and a folded
+   "On this page" block on narrow ones; CSS shows one or the other. #}
+{% set doc = content | guideSections %}
+
+{% macro sectionNav(toc) %}
+  <ol class="toc">
+    {% for s in toc %}
+      <li>
+        <a href="#{{ s.id }}">{{ s.text | safe }}</a>
+        {% if s.children.length %}
+          <ol>
+            {% for c in s.children %}
+              <li><a href="#{{ c.id }}">{{ c.text | safe }}</a></li>
+            {% endfor %}
+          </ol>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+{% endmacro %}
+
 <article class="guide-page">
   <p class="back"><a href="/guides/">← Guides</a></p>
 
@@ -11,8 +34,36 @@ layout: base.njk
     {% if summary %}<p>{{ summary }}</p>{% endif %}
   </section>
 
-  <div class="prose">
-    {{ content | safe }}
+  <div class="guide-layout">
+    <aside class="guide-sidebar" aria-label="Guide navigation">
+      <nav aria-labelledby="guides-title">
+        <p class="sidebar-title" id="guides-title">Guides</p>
+        <ul class="toc">
+          {% for g in collections.guide %}
+            <li><a href="{{ g.url }}"{% if g.url == page.url %} aria-current="page"{% endif %}>{{ g.data.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </nav>
+      {% if doc.toc.length %}
+        <nav aria-labelledby="toc-title">
+          <p class="sidebar-title" id="toc-title">On this page</p>
+          {{ sectionNav(doc.toc) }}
+        </nav>
+      {% endif %}
+    </aside>
+
+    <div class="guide-main">
+      {% if doc.toc.length %}
+        <details class="toc-mobile">
+          <summary>On this page</summary>
+          {{ sectionNav(doc.toc) }}
+        </details>
+      {% endif %}
+
+      <div class="prose">
+        {{ doc.html | safe }}
+      </div>
+    </div>
   </div>
 
   {% if projects %}
@@ -24,3 +75,41 @@ layout: base.njk
     </ul>
   {% endif %}
 </article>
+
+{# Marks the nav entry for the section in view. Without JS the nav is plain
+   links, so nothing depends on this. It waits for DOMContentLoaded because it
+   also watches the footer, which comes after <main>. #}
+<script>
+  const initGuideNav = () => {
+    if (!("IntersectionObserver" in window)) return;
+    const heads = [...document.querySelectorAll(".guide-page .prose :is(h2, h3)[id]")];
+    if (!heads.length) return;
+    const links = (id) => document.querySelectorAll(`.toc a[href="#${CSS.escape(id)}"]`);
+    let current = null;
+    const update = () => {
+      // The last heading above a line a quarter of the way down; at the very
+      // bottom of the page, the last one on screen, so a short final section
+      // can still be reached.
+      const atEnd =
+        window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      const line = atEnd ? window.innerHeight : window.innerHeight * 0.25;
+      let active = heads[0];
+      for (const h of heads) {
+        if (h.getBoundingClientRect().top <= line) active = h;
+        else break;
+      }
+      if (active === current) return;
+      if (current) links(current.id).forEach((a) => a.removeAttribute("aria-current"));
+      links(active.id).forEach((a) => a.setAttribute("aria-current", "true"));
+      current = active;
+    };
+    const io = new IntersectionObserver(update, { rootMargin: "0px 0px -75% 0px" });
+    heads.forEach((h) => io.observe(h));
+    // The footer coming into view is the "reached the end" signal.
+    const foot = document.querySelector(".site-footer");
+    if (foot) new IntersectionObserver(update, { threshold: [0, 0.5, 0.9, 0.98] }).observe(foot);
+    update();
+  };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initGuideNav);
+  else initGuideNav();
+</script>
