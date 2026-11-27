@@ -14,3 +14,24 @@ description: Cubic Echo — getting-started guides that put several projects tog
     {% include "guide-card.njk" %}
   {% endfor %}
 </ul>
+
+<section class="prose app-templates" id="app-templates">
+  <h2>Deploy them as app templates</h2>
+  <p>
+    Every stack in these guides is also in an app-template feed, so you can
+    deploy it from your stack manager's template list and fill in the settings
+    in a form:
+  </p>
+  <pre><code>{{ site.url }}/templates.json</code></pre>
+  <ul>
+    <li><strong>Portainer:</strong> Settings → App Templates → URL.</li>
+    <li><strong>Dockhand:</strong> Templates → Sources → add the URL.</li>
+  </ul>
+  <p>
+    The feed lists {{ templates | length }} stacks:
+    {% for t in templates %}<a href="/templates/{{ t.slug }}/docker-compose.yml">{{ t.slug }}</a>{% if not loop.last %}, {% endif %}{% endfor %}.
+    Each one deploys the compose file from
+    <a href="https://github.com/cubicecho/cubicecho.com/tree/main/templates" rel="noopener">this site's repo</a>,
+    so you can also paste it into a new stack by hand.
+  </p>
+</section>

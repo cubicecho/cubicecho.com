@@ -4,7 +4,6 @@
 # through llm-router. https://cubicecho.com/guides/ai-infrastructure/
 #
 # Set in the stack's environment (generate secrets with `openssl rand -hex 32`):
-#   PUBLIC_HOST            this machine's LAN address or hostname
 #   POSTGRES_PASSWORD
 #   LLM_ROUTER_TOKEN         agent-router sends it to llm-router, so set it
 #                            rather than letting llm-router generate one

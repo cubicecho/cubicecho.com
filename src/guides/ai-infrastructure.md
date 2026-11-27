@@ -37,7 +37,7 @@ Set these in the stack's environment; generate each secret with
 
 | variable | stack | |
 | --- | --- | --- |
-| `PUBLIC_HOST` | both | this machine's LAN address or hostname |
+| `PUBLIC_HOST` | all in one | this machine's LAN address or hostname; ai-router builds its own URL from it |
 | `POSTGRES_PASSWORD` | both | the shared Postgres |
 | `AI_ROUTER_AUTH_SECRET` | all in one | ai-router's session secret |
 | `LLM_ROUTER_TOKEN` | piecemeal | llm-router's token; agent-router uses it too, so set it rather than letting one generate |
