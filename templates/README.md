@@ -125,24 +125,21 @@ signs people in through heautou or any OIDC issuer.
 
 ```mermaid
 flowchart LR
-    user(["browser / apps"])
-    heautou["heautou<br/>(personal-cloud)"]
-    mcpservers["MCP servers<br/>(mcp stack)"]
-    models[("model servers")]
-
-    subgraph stack["cubicecho-ai"]
-        air["ai-router :3202<br/>/v1 · /mcp · UI"]
-        min["min-agent :3203<br/>chat client"]
-        task["task-server :3204<br/>prompts on a cron"]
-        pg[("postgres 17<br/>ai_router · min_agent · task_server")]
-    end
-
-    user --> air & min & task
-    heautou -. "OIDC" .-> air
-    air -- "providers" --> models
-    air -- "tools" --> mcpservers
-    min & task -- "/v1, agent name as model" --> air
-    air & min & task -- "DATABASE_URL" --> pg
+    heautou["heautou<br/>personal cloud"]
+    min["min-agent :3203"]
+    task["task-server :3204"]
+    air["ai-router :3202<br/>/v1 · /mcp · UI"]
+    pg[("postgres")]
+    mcpservers["MCP servers<br/>tools · mcp stack"]
+    models[("model servers<br/>providers")]
+    heautou -. "sign-in" .-> air
+    min -- "/v1, agent as model" --> air
+    task --> air
+    air --> mcpservers
+    air --> models
+    air --> pg
+    min --> pg
+    task --> pg
 ```
 
 ## ai-piecemeal
