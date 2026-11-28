@@ -75,21 +75,17 @@ early, 0.x — expect it to move.
 ```mermaid
 flowchart LR
     heautou["heautou<br/>personal cloud"]
-    mcpservers["MCP servers<br/>mcp stack"]
-    models[("model servers")]
-
-    subgraph stack["ai-router stack"]
-        air["ai-router :3202<br/>/v1 · /mcp · UI"]
-        min["min-agent :3203"]
-        task["task-server :3204"]
-        pg[("postgres")]
-    end
-
+    min["min-agent :3203"]
+    task["task-server :3204"]
+    air["ai-router :3202<br/>/v1 · /mcp · UI"]
+    pg[("postgres")]
+    mcpservers["MCP servers<br/>tools · mcp stack"]
+    models[("model servers<br/>providers")]
     heautou -. "sign-in" .-> air
-    air -- "providers" --> models
-    air -- "tools" --> mcpservers
     min -- "/v1, agent as model" --> air
     task --> air
+    air --> mcpservers
+    air --> models
     air --> pg
     min --> pg
     task --> pg
