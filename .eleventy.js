@@ -6,6 +6,14 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/css": "css" });
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/CNAME": "CNAME" });
+  // Mermaid, self-hosted, for ```mermaid blocks in guides (see guide.njk). The
+  // ESM entry imports its chunks by relative path, so they keep their layout
+  // under assets/mermaid/. Source maps are left out.
+  eleventyConfig.addPassthroughCopy({
+    "node_modules/mermaid/dist/mermaid.esm.min.mjs": "assets/mermaid/mermaid.esm.min.mjs",
+    "node_modules/mermaid/dist/chunks/mermaid.esm.min/*.mjs":
+      "assets/mermaid/chunks/mermaid.esm.min",
+  });
   // The stacks' compose files live in templates/<slug>/docker-compose.yml, so a
   // stack manager can deploy them straight from this repo. They are served at
   // /templates/<slug>/docker-compose.yml, and a guide shows one with

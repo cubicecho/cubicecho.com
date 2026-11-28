@@ -113,3 +113,62 @@ layout: base.njk
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initGuideNav);
   else initGuideNav();
 </script>
+
+{# Renders ```mermaid blocks as diagrams. Mermaid is self-hosted under
+   /assets/mermaid/ (passthrough from node_modules, see .eleventy.js) and only
+   loaded on a page that has a diagram. The source block stays in the page and
+   is hidden once its diagram renders, so without JS, or if a diagram fails to
+   parse, the reader still sees the source. Colors come from the theme tokens,
+   and diagrams re-render when the color scheme changes. #}
+<script type="module">
+  const diagrams = [...document.querySelectorAll(".guide-page .prose pre > code.language-mermaid")].map(
+    (code) => {
+      const pre = code.parentElement;
+      const fig = document.createElement("figure");
+      fig.className = "diagram";
+      fig.hidden = true;
+      pre.before(fig);
+      return { pre, fig, source: code.textContent };
+    },
+  );
+  if (diagrams.length) {
+    const { default: mermaid } = await import("/assets/mermaid/mermaid.esm.min.mjs");
+    const scheme = matchMedia("(prefers-color-scheme: dark)");
+    let n = 0;
+    const render = async () => {
+      const css = getComputedStyle(document.documentElement);
+      const token = (name) => css.getPropertyValue(name).trim();
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: "base",
+        darkMode: scheme.matches,
+        fontFamily: token("--font-sans"),
+        themeVariables: {
+          background: token("--bg"),
+          primaryColor: token("--card"),
+          primaryTextColor: token("--fg"),
+          primaryBorderColor: token("--accent"),
+          secondaryColor: token("--bg"),
+          tertiaryColor: token("--bg"),
+          lineColor: token("--muted"),
+          textColor: token("--fg"),
+          clusterBkg: token("--bg"),
+          clusterBorder: token("--line"),
+          edgeLabelBackground: token("--card"),
+        },
+      });
+      for (const d of diagrams) {
+        try {
+          const { svg } = await mermaid.render(`mermaid-${++n}`, d.source);
+          d.fig.innerHTML = svg;
+          d.fig.hidden = false;
+          d.pre.hidden = true;
+        } catch (err) {
+          console.warn("mermaid diagram failed to render; showing its source", err);
+        }
+      }
+    };
+    await render();
+    scheme.addEventListener("change", render);
+  }
+</script>

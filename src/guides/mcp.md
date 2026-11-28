@@ -36,6 +36,29 @@ Set these in the stack's environment; generate tokens with
 | [mcp-actual](/projects/mcp-actual/) | 3101 | `/mcp` |
 | [mcp-ragdown](/projects/mcp-ragdown/) | 3102 | `/mcp/<folder>` |
 
+The three servers are independent of each other. Each one checks its own
+token, and none of them needs a database.
+
+```mermaid
+flowchart LR
+    clients(["MCP clients<br/>Claude Code, min-agent,<br/>task-server, a router"])
+
+    subgraph stack["mcp stack"]
+        skills["mcp-skills-manager :3100<br/>skills"]
+        ragdown["mcp-ragdown :3102<br/>your notes"]
+        actual["mcp-actual :3101<br/>your budget"]
+    end
+
+    notes[/"NOTES_DIR<br/>Markdown folder"/]
+    actualsrv[("Actual sync server")]
+
+    clients -- "bearer token, /mcp" --> skills
+    clients --> ragdown
+    clients --> actual
+    notes --> ragdown
+    actual --> actualsrv
+```
+
 <details class="compose">
 <summary><code>mcp.yml</code> — show the compose file</summary>
 

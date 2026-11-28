@@ -87,6 +87,13 @@ and its rules (`.guide-layout`, `.guide-sidebar`, `.toc`, `.toc-mobile`,
 - Headings have `scroll-margin-top` so a jump does not tuck them under the
   viewport edge; smooth scrolling is on only for guide pages and only under
   `prefers-reduced-motion: no-preference`.
+- **Diagrams**: a ```` ```mermaid ```` block in a guide renders as a
+  `figure.diagram`. Mermaid is an npm devDependency, passthrough-copied to
+  `/assets/mermaid/` (no CDN), and a module script at the end of `guide.njk`
+  loads it only on pages that have one. Its colors are read from the theme
+  tokens, so a token change restyles diagrams too. Without JS, or on a parse
+  error, the source block stays visible. Guides run through Nunjucks first, so
+  keep `{{`/`{%` out of diagram text.
 - Tables and the folded compose `<details>` scroll inside themselves; the
   grid column is `minmax(0, …)` and `.guide-main` has `min-width: 0`, so wide
   content cannot push the page sideways. Check 375px for horizontal scroll

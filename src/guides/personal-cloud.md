@@ -45,6 +45,36 @@ default. Point an app at your own Postgres with its `*_DATABASE_URL`.
 | [eunomia](/projects/eunomia/) | time | 3013 |
 | [engrafo](/projects/engrafo/) | documents | 3014 (storage on 9000/9001) |
 
+How the pieces connect. heautou keeps its own data and needs nothing else.
+Every other app has a database of its own on the shared Postgres, and engrafo
+also stores files in RustFS, whose buckets a one-shot `rustfs-init` job
+creates.
+
+```mermaid
+flowchart TB
+    user(["browser"])
+    heautou["heautou :3000<br/>sign-in"]
+
+    subgraph apps["apps"]
+        ethos["ethos :3010<br/>habits"]
+        telos["telos :3011<br/>todos"]
+        philotes["philotes :3012<br/>people"]
+        eunomia["eunomia :3013<br/>time"]
+        engrafo["engrafo :3014<br/>documents"]
+    end
+
+    pg[("postgres<br/>one database per app")]
+    rustfs[("rustfs :9000<br/>file storage")]
+    init["rustfs-init<br/>creates buckets once"]
+
+    user --> heautou
+    user --> apps
+    heautou -. "Sign in with Heautou" .-> apps
+    apps --> pg
+    engrafo --> rustfs
+    init --> rustfs
+```
+
 <details class="compose">
 <summary><code>personal-cloud.yml</code> — show the compose file</summary>
 

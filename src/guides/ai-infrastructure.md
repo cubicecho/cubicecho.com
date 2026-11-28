@@ -72,6 +72,29 @@ place and every app that uses it follows.
 Worker machines can dial in to run tools that have to live somewhere else. It is
 early, 0.x — expect it to move.
 
+```mermaid
+flowchart LR
+    heautou["heautou<br/>personal cloud"]
+    mcpservers["MCP servers<br/>mcp stack"]
+    models[("model servers")]
+
+    subgraph stack["ai-router stack"]
+        air["ai-router :3202<br/>/v1 · /mcp · UI"]
+        min["min-agent :3203"]
+        task["task-server :3204"]
+        pg[("postgres")]
+    end
+
+    heautou -. "sign-in" .-> air
+    air -- "providers" --> models
+    air -- "tools" --> mcpservers
+    min -- "/v1, agent as model" --> air
+    task --> air
+    air --> pg
+    min --> pg
+    task --> pg
+```
+
 <details class="compose">
 <summary><code>ai-router.yml</code> — show the compose file</summary>
 
@@ -82,6 +105,34 @@ early, 0.x — expect it to move.
 </details>
 
 ## Piecemeal
+
+Each concern is its own service. agent-router reaches models only through
+llm-router, which it knows as the provider `llm`.
+
+```mermaid
+flowchart LR
+    mcpservers["MCP servers<br/>mcp stack, LAN discovery"]
+    models[("model servers")]
+
+    subgraph stack["ai-piecemeal stack"]
+        mcpr["mcp-router :3200<br/>tools"]
+        llmr["llm-router :3201<br/>models"]
+        agr["agent-router :3205<br/>agents, /graphql"]
+        min["min-agent :3203"]
+        task["task-server :3204"]
+        pg[("postgres")]
+    end
+
+    mcpr --> mcpservers
+    llmr --> models
+    agr -- "provider llm<br/>LLM_ROUTER_TOKEN" --> llmr
+    min -- "/v1 models" --> llmr
+    min -. "/v1 agents" .-> agr
+    task --> llmr
+    agr --> pg
+    min --> pg
+    task --> pg
+```
 
 <details class="compose">
 <summary><code>ai-piecemeal.yml</code> — show the compose file</summary>

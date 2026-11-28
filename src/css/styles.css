@@ -325,6 +325,24 @@ main {
   padding: 0;
   background: transparent;
 }
+/* A ```mermaid block rendered as a diagram (script in guide.njk). Mermaid caps
+   the svg at its natural width, so a wide one scales down to fit. */
+.prose figure.diagram {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  text-align: center;
+}
+.prose figure.diagram[hidden] {
+  display: none;
+}
+.prose figure.diagram svg {
+  max-width: 100%;
+  height: auto;
+}
 
 .readme-link {
   margin: 2rem 0 0;
